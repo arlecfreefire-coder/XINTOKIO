@@ -1,4 +1,8 @@
 const { Client, GatewayIntentBits, SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const http = require('http');
+
+// Servidor web para que Render no llore con los puertos
+http.createServer((req, res) => res.end('XINTOKIO ONLINE')).listen(process.env.PORT || 3000);
 
 const client = new Client({
   intents: [
@@ -9,7 +13,7 @@ const client = new Client({
   ]
 });
 
-client.once('ready', async () => {
+client.once('clientReady', async () => {
   console.log(`XINTOKIO online como ${client.user.tag}`);
   const commands = [
     new SlashCommandBuilder().setName('help').setDescription('Muestra todos los comandos'),
@@ -28,93 +32,64 @@ client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
   const { commandName } = interaction;
 
-  if (commandName === 'help') {
-    const embed = new EmbedBuilder().setTitle('🤖 Comandos de XINTOKIO').setColor('#FF69B4').addFields(
-      { name: '/ban @usuario razón', value: 'Banea usuarios' },
-      { name: '/kick @usuario razón', value: 'Expulsa usuarios' },
-      { name: '/mute @usuario minutos', value: 'Silencia con timeout' },
-      { name: '/unmute @usuario', value: 'Quita el timeout' },
-      { name: '/clear cantidad', value: 'Borra mensajes 1-100' },
-      { name: '/decir mensaje', value: 'El bot habla por ti' }
-    );
-    await interaction.reply({ embeds: [embed] });
-  }
-
-  if (commandName === 'ban') {
-    if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
-      return interaction.reply({ content: 'No tienes permisos para banear.', ephemeral: true });
+  try {
+    if (commandName === 'help') {
+      const embed = new EmbedBuilder().setTitle('🤖 Comandos de XINTOKIO').setColor('#FF69B4').addFields(
+        { name: '/ban @usuario razón', value: 'Banea usuarios' },
+        { name: '/kick @usuario razón', value: 'Expulsa usuarios' },
+        { name: '/mute @usuario minutos', value: 'Silencia con timeout' },
+        { name: '/unmute @usuario', value: 'Quita el timeout' },
+        { name: '/clear cantidad', value: 'Borra mensajes 1-100' },
+        { name: '/decir mensaje', value: 'El bot habla por ti' }
+      );
+      await interaction.reply({ embeds: [embed] });
     }
-    const user = interaction.options.getUser('usuario');
-    const reason = interaction.options.getString('razon') || 'Sin razón';
-    try {
+
+    if (commandName === 'ban') {
+      if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
+        return interaction.reply({ content: 'No tienes permisos para banear.', flags: 64 });
+      }
+      const user = interaction.options.getUser('usuario');
+      const reason = interaction.options.getString('razon') || 'Sin razón';
       await interaction.guild.members.ban(user, { reason });
       await interaction.reply(`🔨 ${user.tag} fue baneado. Razón: ${reason}`);
-    } catch {
-      await interaction.reply({ content: 'No tengo permisos o mi rol está muy abajo.', ephemeral: true });
     }
-  }
 
-  if (commandName === 'kick') {
-    if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
-      return interaction.reply({ content: 'No tienes permisos para expulsar.', ephemeral: true });
-    }
-    const user = interaction.options.getUser('usuario');
-    const reason = interaction.options.getString('razon') || 'Sin razón';
-    try {
+    if (commandName === 'kick') {
+      if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
+        return interaction.reply({ content: 'No tienes permisos para expulsar.', flags: 64 });
+      }
+      const user = interaction.options.getUser('usuario');
+      const reason = interaction.options.getString('razon') || 'Sin razón';
       const member = await interaction.guild.members.fetch(user.id);
       await member.kick(reason);
       await interaction.reply(`👢 ${user.tag} fue expulsado. Razón: ${reason}`);
-    } catch {
-      await interaction.reply({ content: 'No pude kickear a ese usuario.', ephemeral: true });
     }
-  }
 
-  if (commandName === 'mute') {
-    if (!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
-      return interaction.reply({ content: 'No tienes permisos para mutear.', ephemeral: true });
-    }
-    const user = interaction.options.getUser('usuario');
-    const minutos = interaction.options.getInteger('minutos');
-    try {
+    if (commandName === 'mute') {
+      if (!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
+        return interaction.reply({ content: 'No tienes permisos para mutear.', flags: 64 });
+      }
+      const user = interaction.options.getUser('usuario');
+      const minutos = interaction.options.getInteger('minutos');
       const member = await interaction.guild.members.fetch(user.id);
       await member.timeout(minutos * 60 * 1000, 'Mute por comando');
       await interaction.reply(`🔇 ${user.tag} muteado por ${minutos} minutos.`);
-    } catch {
-      await interaction.reply({ content: 'No pude mutear a ese usuario.', ephemeral: true });
     }
-  }
 
-  if (commandName === 'unmute') {
-    if (!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
-      return interaction.reply({ content: 'No tienes permisos.', ephemeral: true });
-    }
-    const user = interaction.options.getUser('usuario');
-    try {
+    if (commandName === 'unmute') {
+      if (!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
+        return interaction.reply({ content: 'No tienes permisos.', flags: 64 });
+      }
+      const user = interaction.options.getUser('usuario');
       const member = await interaction.guild.members.fetch(user.id);
       await member.timeout(null);
       await interaction.reply(`🔊 ${user.tag} desmuteado.`);
-    } catch {
-      await interaction.reply({ content: 'No pude desmutear.', ephemeral: true });
     }
-  }
 
-  if (commandName === 'clear') {
-    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
-      return interaction.reply({ content: 'No tienes permisos.', ephemeral: true });
-    }
-    const cantidad = interaction.options.getInteger('cantidad');
-    if (cantidad < 1 || cantidad > 100) {
-      return interaction.reply({ content: 'Pon un número entre 1 y 100.', ephemeral: true });
-    }
-    await interaction.channel.bulkDelete(cantidad, true);
-    await interaction.reply({ content: `🗑️ Borré ${cantidad} mensajes.`, ephemeral: true });
-  }
-
-  if (commandName === 'decir') {
-    const mensaje = interaction.options.getString('mensaje');
-    await interaction.reply({ content: 'Enviado.', ephemeral: true });
-    await interaction.channel.send(mensaje);
-  }
-});
-
-client.login(process.env.TOKEN);
+    if (commandName === 'clear') {
+      if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
+        return interaction.reply({ content: 'No tienes permisos.', flags: 64 });
+      }
+      const cantidad = interaction.options.getInteger('cantidad');
+      if (cantidad < 1 || cantidad > 100 
