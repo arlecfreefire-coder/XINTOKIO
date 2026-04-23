@@ -116,19 +116,14 @@ client.on('interactionCreate', async interaction => {
       await interaction.editReply({ content: '✅ Enviado.' });
     }
 
-  } catch (error) {
+    } catch (error) {
     console.error(error);
-    const errorMsg = { content: '❌ Algo salió mal. Revisa mis permisos o que el usuario exista.' };
+    const errorMsg = '❌ Algo salió mal. Revisa mis permisos o que el usuario exista.';
+    
     if (interaction.deferred || interaction.replied) {
-      await interaction.editReply(errorMsg).catch(() => {});
+      interaction.editReply({ content: errorMsg }).catch(() => {});
     } else {
-      await interaction.reply({ content: errorMsg.content, ephemeral: true }).catch(() => {});
+      interaction.reply({ content: errorMsg, ephemeral: true }).catch(() => {});
     }
   }
 });
-
-process.on('unhandledRejection', error => {
-  console.error('Unhandled promise rejection:', error);
-});
-
-client.login(process.env.TOKEN);
