@@ -33,6 +33,8 @@ client.on('interactionCreate', async interaction => {
   const { commandName } = interaction;
 
   try {
+    await interaction.deferReply({ ephemeral: true }); // <- ARREGLA EL TIMEOUT Y LO HACE PRIVADO
+
     if (commandName === 'help') {
       const embed = new EmbedBuilder().setTitle('🤖 Comandos de XINTOKIO').setColor('#FF69B4').addFields(
         { name: '/ban @usuario razón', value: 'Banea usuarios' },
@@ -42,75 +44,88 @@ client.on('interactionCreate', async interaction => {
         { name: '/clear cantidad', value: 'Borra mensajes 1-100' },
         { name: '/decir mensaje', value: 'El bot habla por ti' }
       );
-      await interaction.reply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] });
     }
 
     if (commandName === 'ban') {
       if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
-        return interaction.reply({ content: 'No tienes permisos para banear.', flags: 64 });
+        return interaction.editReply({ content: 'No tienes permisos para banear.' });
       }
       const user = interaction.options.getUser('usuario');
       const reason = interaction.options.getString('razon') || 'Sin razón';
       await interaction.guild.members.ban(user, { reason });
-      await interaction.reply(`🔨 ${user.tag} fue baneado. Razón: ${reason}`);
+      await interaction.editReply({ content: `🔨 ${user.tag} fue baneado. Razón: ${reason}` });
     }
 
     if (commandName === 'kick') {
       if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
-        return interaction.reply({ content: 'No tienes permisos para expulsar.', flags: 64 });
+        return interaction.editReply({ content: 'No tienes permisos para expulsar.' });
       }
       const user = interaction.options.getUser('usuario');
       const reason = interaction.options.getString('razon') || 'Sin razón';
       const member = await interaction.guild.members.fetch(user.id);
       await member.kick(reason);
-      await interaction.reply(`👢 ${user.tag} fue expulsado. Razón: ${reason}`);
+      await interaction.editReply({ content: `👢 ${user.tag} fue expulsado. Razón: ${reason}` });
     }
 
     if (commandName === 'mute') {
       if (!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
-        return interaction.reply({ content: 'No tienes permisos para mutear.', flags: 64 });
+        return interaction.editReply({ content: 'No tienes permisos para mutear.' });
       }
       const user = interaction.options.getUser('usuario');
       const minutos = interaction.options.getInteger('minutos');
       const member = await interaction.guild.members.fetch(user.id);
       await member.timeout(minutos * 60 * 1000, 'Mute por comando');
-      await interaction.reply(`🔇 ${user.tag} muteado por ${minutos} minutos.`);
+      await interaction.editReply({ content: `🔇 ${user.tag} muteado por ${minutos} minutos.` });
     }
 
     if (commandName === 'unmute') {
       if (!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
-        return interaction.reply({ content: 'No tienes permisos.', flags: 64 });
+        return interaction.editReply({ content: 'No tienes permisos.' });
       }
       const user = interaction.options.getUser('usuario');
       const member = await interaction.guild.members.fetch(user.id);
       await member.timeout(null);
-      await interaction.reply(`🔊 ${user.tag} desmuteado.`);
+      await interaction.editReply({ content: `🔊 ${user.tag} desmuteado.` });
     }
 
     if (commandName === 'clear') {
       if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
-        return interaction.reply({ content: 'No tienes permisos.', flags: 64 });
+        return interaction.editReply({ content: 'No tienes permisos.' });
       }
       const cantidad = interaction.options.getInteger('cantidad');
-          if (cantidad < 1 || cantidad > 500) {
-        return interaction.reply({ content: 'Pon un número entre 1 y 500.', flags: 64 });
+      if (cantidad < 1 || cantidad > 100) { // <- DISCORD SOLO DEJA 100 MAX
+        return interaction.editReply({ content: 'Pon un número entre 1 y 100.' });
       }
       const deleted = await interaction.channel.bulkDelete(cantidad, true);
-      await interaction.reply({ content: `🗑️ Borré ${deleted.size} mensajes.`, flags: 64 });
+      await interaction.editReply({ content: `🗑️ Borré ${deleted.size} mensajes.` });
     }
 
     if (commandName === 'decir') {
       if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
-        return interaction.reply({ content: 'No tienes permisos para usar este comando.', flags: 64 });
+        return interaction.editReply({ content: 'No tienes permisos para usar este comando.' });
       }
       const mensaje = interaction.options.getString('mensaje');
       await interaction.channel.send(mensaje);
-      await interaction.reply({ content: '✅ Enviado.', flags: 64 });
+      await interaction.editReply({ content: '✅ Enviado.' });
     }
 
   } catch (error) {
     console.error(error);
-    const errorMsg = { content: '❌ Algo salió mal. Revisa mis permisos o que el usuario/rol exista.', flags: 64 };
+    const errorMsg = { content: '❌ Algo salió mal. Revisa mis permisos o que el usuario/rol exista.' };
+    if (interaction.deferred || interaction.replied) {
+      await interaction.editReply(errorMsg).catch(() => {});
+    } else {
+      await interaction.reply({ content: errorMsg.content, ephemeral: true }).catch(() => {});
+    }
+  }
+});
+
+process.on('unhandledRejection', error => {
+  console.error('Unhandled promise rejection:', error);
+});
+
+client.login(process.env.TOKEN);    const errorMsg = { content: '❌ Algo salió mal. Revisa mis permisos o que el usuario/rol exista.', flags: 64 };
     if (interaction.replied || interaction.deferred) {
       await interaction.followUp(errorMsg).catch(() => {});
     } else {
