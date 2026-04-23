@@ -1,9 +1,13 @@
 const { Client, GatewayIntentBits, SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
-const http = require('http');
+const express = require('express');
 
-// Servidor web para que Render no llore con los puertos
-http.createServer((req, res) => res.end('XINTOKIO ONLINE')).listen(process.env.PORT || 3000);
+// 1. Servidor web PRIMERO para que Render no mate el proceso
+const app = express();
+const port = process.env.PORT || 3000;
+app.get('/', (req, res) => res.send('XINTOKIO ONLINE'));
+app.listen(port, () => console.log(`Servidor corriendo en puerto ${port}`));
 
+// 2. Cliente de Discord
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -13,7 +17,8 @@ const client = new Client({
   ]
 });
 
-client.once('clientReady', async () => {
+// 3. Evento corregido: 'ready' no 'clientReady'
+client.once('ready', async () => {
   console.log(`XINTOKIO online como ${client.user.tag}`);
   const commands = [
     new SlashCommandBuilder().setName('help').setDescription('Muestra todos los comandos'),
@@ -26,6 +31,7 @@ client.once('clientReady', async () => {
   ].map(command => command.toJSON());
   
   await client.application.commands.set(commands);
+  console.log('Comandos registrados');
 });
 
 client.on('interactionCreate', async interaction => {
@@ -112,7 +118,7 @@ client.on('interactionCreate', async interaction => {
 
   } catch (error) {
     console.error(error);
-    const errorMsg = { content: '❌ Algo salió mal. Revisa mis permisos o que el usuario/rol exista.' };
+    const errorMsg = { content: '❌ Algo salió mal. Revisa mis permisos o que el usuario exista.' };
     if (interaction.deferred || interaction.replied) {
       await interaction.editReply(errorMsg).catch(() => {});
     } else {
