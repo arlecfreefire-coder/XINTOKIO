@@ -92,4 +92,35 @@ client.on('interactionCreate', async interaction => {
         return interaction.reply({ content: 'No tienes permisos.', flags: 64 });
       }
       const cantidad = interaction.options.getInteger('cantidad');
-      if (cantidad < 1 || cantidad > 100 
+          if (cantidad < 1 || cantidad > 500) {
+        return interaction.reply({ content: 'Pon un número entre 1 y 500.', flags: 64 });
+      }
+      const deleted = await interaction.channel.bulkDelete(cantidad, true);
+      await interaction.reply({ content: `🗑️ Borré ${deleted.size} mensajes.`, flags: 64 });
+    }
+
+    if (commandName === 'decir') {
+      if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
+        return interaction.reply({ content: 'No tienes permisos para usar este comando.', flags: 64 });
+      }
+      const mensaje = interaction.options.getString('mensaje');
+      await interaction.channel.send(mensaje);
+      await interaction.reply({ content: '✅ Enviado.', flags: 64 });
+    }
+
+  } catch (error) {
+    console.error(error);
+    const errorMsg = { content: '❌ Algo salió mal. Revisa mis permisos o que el usuario/rol exista.', flags: 64 };
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp(errorMsg).catch(() => {});
+    } else {
+      await interaction.reply(errorMsg).catch(() => {});
+    }
+  }
+});
+
+process.on('unhandledRejection', error => {
+  console.error('Unhandled promise rejection:', error);
+});
+
+client.login(process.env.TOKEN); 
