@@ -17,7 +17,7 @@ const client = new Client({
   ]
 });
 
-// 3. Evento corregido: 'ready' no 'clientReady'
+// 3. Evento ready
 client.once('ready', async () => {
   console.log(`XINTOKIO online como ${client.user.tag}`);
   const commands = [
@@ -29,7 +29,7 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('clear').setDescription('Borra mensajes').addIntegerOption(o => o.setName('cantidad').setDescription('Cantidad 1-100').setRequired(true)),
     new SlashCommandBuilder().setName('decir').setDescription('XINTOKIO envía un mensaje').addStringOption(o => o.setName('mensaje').setDescription('Mensaje').setRequired(true))
   ].map(command => command.toJSON());
-  
+
   await client.application.commands.set(commands);
   console.log('Comandos registrados');
 });
@@ -116,10 +116,10 @@ client.on('interactionCreate', async interaction => {
       await interaction.editReply({ content: '✅ Enviado.' });
     }
 
-    } catch (error) {
+  } catch (error) {
     console.error(error);
     const errorMsg = '❌ Algo salió mal. Revisa mis permisos o que el usuario exista.';
-    
+
     if (interaction.deferred || interaction.replied) {
       interaction.editReply({ content: errorMsg }).catch(() => {});
     } else {
@@ -127,3 +127,6 @@ client.on('interactionCreate', async interaction => {
     }
   }
 });
+
+
+client.login(process.env.TOKEN);
