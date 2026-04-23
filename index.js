@@ -33,7 +33,7 @@ client.on('interactionCreate', async interaction => {
   const { commandName } = interaction;
 
   try {
-    await interaction.deferReply({ ephemeral: true }); // <- ARREGLA EL TIMEOUT Y LO HACE PRIVADO
+    await interaction.deferReply({ ephemeral: true });
 
     if (commandName === 'help') {
       const embed = new EmbedBuilder().setTitle('🤖 Comandos de XINTOKIO').setColor('#FF69B4').addFields(
@@ -94,7 +94,7 @@ client.on('interactionCreate', async interaction => {
         return interaction.editReply({ content: 'No tienes permisos.' });
       }
       const cantidad = interaction.options.getInteger('cantidad');
-      if (cantidad < 1 || cantidad > 100) { // <- DISCORD SOLO DEJA 100 MAX
+      if (cantidad < 1 || cantidad > 100) {
         return interaction.editReply({ content: 'Pon un número entre 1 y 100.' });
       }
       const deleted = await interaction.channel.bulkDelete(cantidad, true);
@@ -125,17 +125,4 @@ process.on('unhandledRejection', error => {
   console.error('Unhandled promise rejection:', error);
 });
 
-client.login(process.env.TOKEN);    const errorMsg = { content: '❌ Algo salió mal. Revisa mis permisos o que el usuario/rol exista.', flags: 64 };
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp(errorMsg).catch(() => {});
-    } else {
-      await interaction.reply(errorMsg).catch(() => {});
-    }
-  }
-});
-
-process.on('unhandledRejection', error => {
-  console.error('Unhandled promise rejection:', error);
-});
-
-client.login(process.env.TOKEN); 
+client.login(process.env.TOKEN);
