@@ -115,4 +115,3 @@ client.on('interactionCreate', async interaction => {
     await interaction.reply({ content: 'Enviado.', ephemeral: true });
     await interaction.channel.send(mensaje);
   }
- 
