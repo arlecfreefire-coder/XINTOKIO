@@ -65,11 +65,6 @@ client.once('ready', async () => {
   console.log(`✅ XINTOKIO online como ${client.user.tag}`);
   const commands = [
     
-// 4. Evento ready
-client.once('ready', async () => {
-  console.log(`✅ XINTOKIO online como ${client.user.tag}`);
-  const commands = [
-    
 // MODERACIÓN BÁSICA - 33 COMANDOS
     new SlashCommandBuilder().setName('help').setDescription('Muestra todos los comandos'),
     new SlashCommandBuilder().setName('ban').setDescription('Banea a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
