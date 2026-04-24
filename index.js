@@ -124,7 +124,6 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('userinfo').setDescription('Info completa de un user').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
     new SlashCommandBuilder().setName('roleall').setDescription('Da rol a todos').addRoleOption(o => o.setName('rol').setDescription('Rol a dar').setRequired(true)),
     new SlashCommandBuilder().setName('vcban').setDescription('Banea de canales de voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-    new SlashCommandBuilder().setName('nicklock').setDescription('Bloquea el apodo de alguien').addSubcommand(s => s.setName('lock').setDescription('Bloquear apodo').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('apodo').setDescription('Apodo fijo').setRequired(true))).addSubcommand(s => s.setName('unlock').setDescription('Desbloquea apodo').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true))),
 
     // LOGS Y AUTOSPY
     new SlashCommandBuilder().setName('messagelogs').setDescription('Últimos mensajes borrados').addChannelOption(o => o.setName('canal').setDescription('Canal').setRequired(true)),
