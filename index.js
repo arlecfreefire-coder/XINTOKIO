@@ -953,6 +953,16 @@ client.on('interactionCreate', async interaction => {
     }
 
     // LOGS Y AUTOSPY
+    if (commandName === 'vcban') {
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.MuteMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Silenciar miembros`.' });
+      const user = interaction.options.getUser('usuario');
+      const member = await interaction.guild.members.fetch(user.id);
+      await member.voice.disconnect().catch(() => {});
+      await member.voice.setMute(true, 'VC Ban').catch(() => {});
+      return interaction.editReply({ content: `🔇 ${user} baneado de voz.` });
+    }
+
+    // LOGS Y AUTOSPY
     if (commandName === 'messagelogs') {
       return interaction.editReply({ content: '📜 Activa los logs del server en Ajustes > Auditoría para ver mensajes borrados. El bot no guarda mensajes por privacidad.' });
     }
