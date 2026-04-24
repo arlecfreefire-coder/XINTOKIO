@@ -68,7 +68,11 @@ const tablaPeriodica = {
 client.once('ready', async () => {
   console.log(`✅ XINTOKIO online como ${client.user.tag}`);
   const commands = [
-    // MODERACIÓN - 33 COMANDOS
+    
+    
+    // COMANDOS DE ESTUDIO NUEVOS
+    new SlashCommandBuilder().setName('flashcard').setDescription('Crea flashcards para estudiar').addSubcommand(s => s.setName('crear').setDescription('Crea una flashcard').addStringOption(o => o.setName('pregunta').setDescription('Pregunta').setRequired(true)).addStringOption(o => o.setName('respuesta').setDescription('Respuesta').setRequired(true))).addSubcommand(s => s.setName('estudiar').setDescription('Te hace preguntas random de tus flashcards')).addSubcommand(s => s.setName('ver').setDescription('Ver todas tus flashcards')).addSubcommand(s => s.setName('borrar').setDescription('Borra todas')),
+    new SlashCommandBuilder().setName('quimica').setDescript    // MODERACIÓN - 33 COMANDOS
     new SlashCommandBuilder().setName('help').setDescription('Muestra todos los comandos'),
     new SlashCommandBuilder().setName('ban').setDescription('Banea a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
     new SlashCommandBuilder().setName('unban').setDescription('Desbanea a un usuario').addStringOption(o => o.setName('userid').setDescription('ID del usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
@@ -90,8 +94,8 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('auditlog').setDescription('Muestra las últimas 10 acciones de moderación'),
     new SlashCommandBuilder().setName('purge').setDescription('Borra mensajes de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('cantidad').setDescription('Cantidad 1-100').setRequired(true).setMinValue(1).setMaxValue(100))),
     new SlashCommandBuilder().setName('nickname').setDescription('Cambia el apodo de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('apodo').setDescription('Nuevo apodo').setRequired(true))),
-    new SlashCommandBuilder().setName('softban').setDescription('Banea y desbanea para borrar mensajes').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')))),
-    new SlashCommandBuilder().setName('temprole').setDescription('Da un rol temporal').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addRoleOption(o => o.setName('rol').setDescription('Rol').setRequired(true)).addIntegerOption(o => o.setName('horas').setDescription('Horas 1-168').setRequired(true).setMinValue(1).setMaxValue(168)))),
+    new SlashCommandBuilder().setName('softban').setDescription('Banea y desbanea para borrar mensajes').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
+    new SlashCommandBuilder().setName('temprole').setDescription('Da un rol temporal').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addRoleOption(o => o.setName('rol').setDescription('Rol').setRequired(true)).addIntegerOption(o => o.setName('horas').setDescription('Horas 1-168').setRequired(true).setMinValue(1).setMaxValue(168))),
     new SlashCommandBuilder().setName('notes').setDescription('Agrega nota privada a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('nota').setDescription('Nota').setRequired(true))),
     new SlashCommandBuilder().setName('usernotes').setDescription('Ve las notas de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
     new SlashCommandBuilder().setName('lockall').setDescription('Bloquea TODOS los canales'),
@@ -101,11 +105,7 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('altcheck').setDescription('Revisa si un usuario es posible alt/cuenta nueva').addUserOption(o => o.setName('usuario').setDescription('Usuario sospechoso').setRequired(true)),
     new SlashCommandBuilder().setName('linkalts').setDescription('Vincula 2 cuentas como alts').addUserOption(o => o.setName('usuario1').setDescription('Cuenta principal').setRequired(true)).addUserOption(o => o.setName('usuario2').setDescription('Cuenta alt').setRequired(true)),
     new SlashCommandBuilder().setName('banip').setDescription('Banea y marca como ban evader').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
-    new SlashCommandBuilder().setName('paneladmin').setDescription('Panel exclusivo: muestra actividad del día'),
-    
-    // COMANDOS DE ESTUDIO NUEVOS
-    new SlashCommandBuilder().setName('flashcard').setDescription('Crea flashcards para estudiar').addSubcommand(s => s.setName('crear').setDescription('Crea una flashcard').addStringOption(o => o.setName('pregunta').setDescription('Pregunta').setRequired(true)).addStringOption(o => o.setName('respuesta').setDescription('Respuesta').setRequired(true))).addSubcommand(s => s.setName('estudiar').setDescription('Te hace preguntas random de tus flashcards')).addSubcommand(s => s.setName('ver').setDescription('Ver todas tus flashcards')).addSubcommand(s => s.setName('borrar').setDescription('Borra todas')),
-    new SlashCommandBuilder().setName('quimica').setDescription('Tabla periódica interactiva').addStringOption(o => o.setName('elemento').setDescription('Nombre o símbolo: H, Oxígeno, Au...').setRequired(true))),
+    new SlashCommandBuilder().setName('paneladmin').setDescription('Panel exclusivo: muestra actividad del día'),ion('Tabla periódica interactiva').addStringOption(o => o.setName('elemento').setDescription('Nombre o símbolo: H, Oxígeno, Au...').setRequired(true))),
     new SlashCommandBuilder().setName('mate').setDescription('Resuelve operaciones y ecuaciones').addStringOption(o => o.setName('problema').setDescription('Ej: 2x+5=15, derivada de x^2').setRequired(true))),
     new SlashCommandBuilder().setName('timer').setDescription('Timer rápido para estudiar').addIntegerOption(o => o.setName('minutos').setDescription('Minutos').setRequired(true).setMinValue(1).setMaxValue(180))),
   ].map(command => command.toJSON());
