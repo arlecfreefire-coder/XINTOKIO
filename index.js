@@ -139,8 +139,9 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('susmode').setDescription('Ban a nuevos con link').addBooleanOption(o => o.setName('estado').setDescription('ON/OFF').setRequired(true)),
     new SlashCommandBuilder().setName('fakeban').setDescription('Ban falso troll').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
 ]).map(command => command.toJSON());
-  await client.application.commands.set(commands);
-  console.log('✅ 58 comandos registrados');
+await client.application.commands.set([]); // ← AGREGA ESTA LÍNEA SOLO 1 VEZ
+await client.application.commands.set(commands);
+console.log('✅ 57 comandos registrados'); // ← CÁMBIALO A 57
 
   setInterval(() => {
     const guilds = client.guilds.cache;
