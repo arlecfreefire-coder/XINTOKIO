@@ -83,7 +83,8 @@ const gifs = {
     'https://media.tenor.com/4g5h6j7k8l9AAAAC/anime-blush.gif',
     'https://media.tenor.com/1q2w3e4r5t6AAAAC/blushing-anime.gif',
     'https://media.tenor.com/6yU8i9o0p1aAAAAC/anime-blush.gif',
-    'https://media.tenor.com/3sD4f5g6h7jAAAAC/blush.gif'
+    'https://media.tenor.com/3sD4f5g6h7jAAAAC/blush.gif',
+    'https://media.tenor.com/pL9o8i7u6y5AAAAC/anime-embarrassed.gif'
   ],
   dance: [
     'https://media.tenor.com/5t6y7u8i9o0AAAAC/anime-dance.gif',
@@ -102,6 +103,30 @@ const gifs = {
     'https://media.tenor.com/5z6x7c8v9b0AAAAC/angry-anime.gif',
     'https://media.tenor.com/1qA2s3d4f5gAAAAC/anime-angry.gif',
     'https://media.tenor.com/6hJ7k8l9z0xAAAAC/angry.gif'
+  ],
+  sleep: [
+    'https://media.tenor.com/2aB3c4d5e6fAAAAC/anime-sleep.gif',
+    'https://media.tenor.com/7gH8i9j0k1lAAAAC/sleeping-anime.gif',
+    'https://media.tenor.com/4mN5b6v7c8xAAAAC/anime-sleepy.gif',
+    'https://media.tenor.com/9qW1e2r3t4yAAAAC/sleep.gif'
+  ],
+  eat: [
+    'https://media.tenor.com/5zX6c7v8b9nAAAAC/anime-eating.gif',
+    'https://media.tenor.com/1aS2d3f4g5hAAAAC/eat-anime.gif',
+    'https://media.tenor.com/8jK9l0z1x2cAAAAC/anime-eat.gif',
+    'https://media.tenor.com/3vB4n5m6q7wAAAAC/eating.gif'
+  ],
+  wave: [
+    'https://media.tenor.com/6eR7t8y9u0iAAAAC/anime-wave.gif',
+    'https://media.tenor.com/2oP3i4u5y6tAAAAC/wave-anime.gif',
+    'https://media.tenor.com/9rE8w7q6w5eAAAAC/anime-hi.gif',
+    'https://media.tenor.com/1rT2y3u4i5oAAAAC/waving.gif'
+  ],
+  laugh: [
+    'https://media.tenor.com/4pL5o6i7u8yAAAAC/anime-laugh.gif',
+    'https://media.tenor.com/7tR6e5w4q3wAAAAC/laughing-anime.gif',
+    'https://media.tenor.com/0oI9u8y7t6rAAAAC/anime-laughing.gif',
+    'https://media.tenor.com/3eW2q1w0e9rAAAAC/laugh.gif'
   ],
   marry: [
     'https://media.tenor.com/1a2b3c4d5e6AAAAC/anime-wedding.gif',
@@ -156,6 +181,10 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('dance').setDescription('Baila'),
     new SlashCommandBuilder().setName('happy').setDescription('Estar feliz'),
     new SlashCommandBuilder().setName('angry').setDescription('Enójate'),
+    new SlashCommandBuilder().setName('sleep').setDescription('Duerme'),
+    new SlashCommandBuilder().setName('eat').setDescription('Come algo'),
+    new SlashCommandBuilder().setName('wave').setDescription('Saluda'),
+    new SlashCommandBuilder().setName('laugh').setDescription('Ríete'),
     new SlashCommandBuilder().setName('propose').setDescription('Propón matrimonio').addUserOption(o => o.setName('usuario').setDescription('A quien proponerle').setRequired(true)),
     new SlashCommandBuilder().setName('marry').setDescription('Acepta una propuesta de matrimonio').addUserOption(o => o.setName('usuario').setDescription('Quien te propuso').setRequired(true)),
     new SlashCommandBuilder().setName('divorce').setDescription('Divórciate de tu pareja'),
@@ -163,7 +192,7 @@ client.once('ready', async () => {
   ].map(command => command.toJSON());
 
   await client.application.commands.set(commands);
-  console.log('✅ 28 comandos registrados: 12 mod + 16 rol');
+  console.log('✅ 33 comandos registrados: 12 mod + 21 rol');
 });
 
 client.on('interactionCreate', async interaction => {
@@ -171,7 +200,7 @@ client.on('interactionCreate', async interaction => {
   const { commandName } = interaction;
 
   try {
-    const rolCommands = ['kiss', 'hug', 'pat', 'slap', 'punch', 'bite', 'cuddle', 'cry', 'puchero', 'blush', 'dance', 'happy', 'angry', 'propose', 'marry', 'divorce', 'marriage'];
+    const rolCommands = ['kiss', 'hug', 'pat', 'slap', 'punch', 'bite', 'cuddle', 'cry', 'puchero', 'blush', 'dance', 'happy', 'angry', 'sleep', 'eat', 'wave', 'laugh', 'propose', 'marry', 'divorce', 'marriage'];
     if (!rolCommands.includes(commandName)) {
       await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     } else {
@@ -181,17 +210,17 @@ client.on('interactionCreate', async interaction => {
     // HELP
     if (commandName === 'help') {
       const embed = new EmbedBuilder()
-   .setTitle('🤖 Comandos de XINTOKIO')
-   .setColor('#FF69B4')
-   .addFields(
+  .setTitle('🤖 Comandos de XINTOKIO')
+  .setColor('#FF69B4')
+  .addFields(
         { name: '🔨 Moderación', value: '`/ban` `/unban` `/kick` `/mute` `/unmute` `/warn` `/clear` `/lock` `/unlock` `/slowmode`', inline: false },
-        { name: '💖 Interacción Tierna', value: '`/kiss` `/hug` `/pat` `/cuddle` `/blush` `/happy`', inline: false },
+        { name: '💖 Interacción Tierna', value: '`/kiss` `/hug` `/pat` `/cuddle` `/blush` `/happy` `/wave`', inline: false },
         { name: '😈 Interacción Travesura', value: '`/slap` `/punch` `/bite` `/angry`', inline: false },
-        { name: '😭 Emociones', value: '`/cry` `/puchero` `/dance`', inline: false },
+        { name: '😭 Emociones', value: '`/cry` `/puchero` `/dance` `/sleep` `/eat` `/laugh`', inline: false },
         { name: '💍 Matrimonio', value: '`/propose` `/marry` `/divorce` `/marriage`', inline: false },
         { name: '⚙️ Utilidad', value: '`/decir` `/help`', inline: false }
       )
-   .setFooter({ text: 'XINTOKIO Bot | Estilo Nekotina Completo' });
+  .setFooter({ text: 'XINTOKIO Bot | Estilo Nekotina Completo - 33 comandos' });
       return interaction.editReply({ embeds: [embed] });
     }
 
@@ -315,7 +344,11 @@ client.on('interactionCreate', async interaction => {
       blush: { text: 'se sonrojó', color: '#FFC0CB', emoji: '😳' },
       dance: { text: 'está bailando', color: '#98FB98', emoji: '💃' },
       happy: { text: 'está feliz', color: '#FFD700', emoji: '😄' },
-      angry: { text: 'está enojado', color: '#FF0000', emoji: '😠' }
+      angry: { text: 'está enojado', color: '#FF0000', emoji: '😠' },
+      sleep: { text: 'se fue a dormir', color: '#9370DB', emoji: '😴' },
+      eat: { text: 'está comiendo', color: '#FF8C00', emoji: '🍽️' },
+      wave: { text: 'saludó a todos', color: '#00CED1', emoji: '👋' },
+      laugh: { text: 'se está riendo', color: '#FFD700', emoji: '😂' }
     };
 
     if (Object.keys(emotionCmds).includes(commandName)) {
@@ -376,4 +409,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 process.on('unhandledRejection', error => console.error('Unhandled:', error));
-client.login(process.env.TOKEN); 
+client.login(process.env.TOKEN);
