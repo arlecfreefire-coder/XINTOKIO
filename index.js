@@ -546,85 +546,123 @@ client.on('interactionCreate', async interaction => {
 .setDescription(lastCases.map(([id, c]) => `**#${id}** - ${c.type.toUpperCase()} a <@${c.user}>\n**Mod:** <@${c.mod}> | **Razón:** ${c.reason}`).join('\n\n'));
       return interaction.editReply({ embeds: [embed] });
     }
+if (commandName === 'purge') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageMessages)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar mensajes`.' });
+  const user = interaction.options.getUser('usuario');
+  const cantidad = interaction.options.getInteger('cantidad');
+  try {
+    const messages = await interaction.channel.messages.fetch({ limit: 100 });
+    const userMessages = messages.filter(m => m.author.id === user.id).first(cantidad);
+    if (userMessages.length === 0) return interaction.editReply({ content: '❌ No encontré mensajes recientes de ese usuario para borrar.' });
+    const deleted = await interaction.channel.bulkDelete(userMessages, true);
+    return interaction.editReply({ content: `🗑️ Borré ${deleted.size} mensajes de ${user.tag}.` });
+  } catch (err) {
+    return interaction.editReply({ content: '❌ Error: Solo puedo borrar mensajes de menos de 14 días.' });
+  }
+}
 
-    if (commandName === 'purge') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageMessages)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar mensajes`.' });
-      const user = interaction.options.getUser('usuario');
-      const cantidad = interaction.options.getInteger('cantidad');
-      const messages = await interaction.channel.messages.fetch({ limit: 100 });
-      const userMessages = messages.filter(m => m.author.id === user.id).first(cantidad);
-      const deleted = await interaction.channel.bulkDelete(userMessages, true);
-      return interaction.editReply({ content: `🗑️ Borré ${deleted.size} mensajes de ${user.tag}.` });
-    }
+if (commandName === 'nickname') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageNicknames)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar apodos`.' });
+  const user = interaction.options.getUser('usuario');
+  const apodo = interaction.options.getString('apodo');
+  try {
+    const member = await interaction.guild.members.fetch(user.id);
+    await member.setNickname(apodo);
+    return interaction.editReply({ content: `✅ Apodo de ${user.tag} cambiado a \`${apodo}\`.` });
+  } catch {
+    return interaction.editReply({ content: '❌ No puedo cambiar ese apodo. Mi rol debe estar arriba del suyo.' });
+  }
+}
 
-    if (commandName === 'nickname') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageNicknames)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar apodos`.' });
-      const user = interaction.options.getUser('usuario');
-      const apodo = interaction.options.getString('apodo');
-      const member = await interaction.guild.members.fetch(user.id);
-      await member.setNickname(apodo);
-      return interaction.editReply({ content: `✅ Apodo de ${user.tag} cambiado a \`${apodo}\`.` });
-    }
+if (commandName === 'softban') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.BanMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Banear miembros`.' });
+  const user = interaction.options.getUser('usuario');
+  const reason = interaction.options.getString('razon') || 'Softban';
+  try {
+    await interaction.guild.members.ban(user, { deleteMessageDays: 7, reason: `Softban por ${interaction.user.tag}: ${reason}` });
+    await interaction.guild.members.unban(user.id, 'Softban - desbaneo automático');
+    const caseId = createCase('softban', user.id, interaction.user.id, reason);
+    return interaction.editReply({ content: `✅ **${user.tag}** softbaneado. Se borraron sus mensajes. Caso #${caseId}` });
+  } catch {
+    return interaction.editReply({ content: '❌ No pude softbanear. Revisa mis permisos y jerarquía de roles.' });
+  }
+}
 
-    if (commandName === 'softban') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.BanMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Banear miembros`.' });
-      const user = interaction.options.getUser('usuario');
-      const reason = interaction.options.getString('razon') || 'Softban';
-      await interaction.guild.members.ban(user, { deleteMessageDays: 7, reason: `Softban por ${interaction.user.tag}: ${reason}` });
-      await interaction.guild.members.unban(user.id, 'Softban - desbaneo automático');
-      const caseId = createCase('softban', user.id, interaction.user.id, reason);
-      return interaction.editReply({ content: `✅ **${user.tag}** softbaneado. Se borraron sus mensajes. Caso #${caseId}` });
-    }
+if (commandName === 'temprole') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageRoles)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar roles`.' });
+  const user = interaction.options.getUser('usuario');
+  const role = interaction.options.getRole('rol');
+  const horas = interaction.options.getInteger('horas');
+  try {
+    const member = await interaction.guild.members.fetch(user.id);
+    await member.roles.add(role);
+    const expires = Date.now() + (horas * 60 * 60 * 1000); // ← ARREGLADO: ahora sí son horas
+    const roles = tempRoles.get(user.id) || [];
+    roles.push({ roleId: role.id, expires });
+    tempRoles.set(user.id, roles);
+    return interaction.editReply({ content: `✅ Rol ${role.name} agregado a ${user.tag} por ${horas}h.` });
+  } catch {
+    return interaction.editReply({ content: '❌ No pude dar ese rol. Mi rol debe estar arriba del rol que intentas dar.' });
+  }
+}
 
-    if (commandName === 'temprole') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageRoles)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar roles`.' });
-      const user = interaction.options.getUser('usuario');
-      const role = interaction.options.getRole('rol');
-      const horas = interaction.options.getInteger('horas');
-      const member = await interaction.guild.members.fetch(user.id);
-      await member.roles.add(role);
-      const expires = Date.now() + (horas * 60 * 1000);
-      const roles = tempRoles.get(user.id) || [];
-      roles.push({ roleId: role.id, expires });
-      tempRoles.set(user.id, roles);
-      return interaction.editReply({ content: `✅ Rol ${role.name} agregado a ${user.tag} por ${horas}h.` });
-    }
+if (commandName === 'notes') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ModerateMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Moderar miembros`.' });
+  const user = interaction.options.getUser('usuario');
+  const nota = interaction.options.getString('nota');
+  const notes = userNotes.get(user.id) || [];
+  notes.push({ note: nota, mod: interaction.user.tag, date: new Date().toLocaleDateString('es-PE') });
+  userNotes.set(user.id, notes);
+  return interaction.editReply({ content: `✅ Nota agregada a ${user.tag}.` });
+}
 
-    if (commandName === 'notes') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.ModerateMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Moderar miembros`.' });
-      const user = interaction.options.getUser('usuario');
-      const nota = interaction.options.getString('nota');
-      const notes = userNotes.get(user.id) || [];
-      notes.push({ note: nota, mod: interaction.user.tag, date: new Date().toLocaleDateString('es-PE') });
-      userNotes.set(user.id, notes);
-      return interaction.editReply({ content: `✅ Nota agregada a ${user.tag}.` });
-    }
+if (commandName === 'usernotes') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ModerateMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Moderar miembros`.' });
+  const user = interaction.options.getUser('usuario');
+  const notes = userNotes.get(user.id) || [];
+  if (notes.length === 0) return interaction.editReply({ content: `✅ ${user.tag} no tiene notas.` });
+  const embed = new EmbedBuilder()
+  .setTitle(`📝 Notas de ${user.tag}`)
+  .setColor('#9370DB')
+  .setDescription(notes.map((n, i) => `**Nota #${i + 1}**\n${n.note}\n**Mod:** ${n.mod} | **Fecha:** ${n.date}`).join('\n\n'));
+  return interaction.editReply({ embeds: [embed] });
+}
 
-    if (commandName === 'usernotes') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.ModerateMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Moderar miembros`.' });
-      const user = interaction.options.getUser('usuario');
-      const notes = userNotes.get(user.id) || [];
-      if (notes.length === 0) return interaction.editReply({ content: `✅ ${user.tag} no tiene notas.` });
-      const embed = new EmbedBuilder()
-.setTitle(`📝 Notas de ${user.tag}`)
-.setColor('#9370DB')
-.setDescription(notes.map((n, i) => `**Nota #${i + 1}**\n${n.note}\n**Mod:** ${n.mod} | **Fecha:** ${n.date}`).join('\n\n'));
-      return interaction.editReply({ embeds: [embed] });
-    }
+if (commandName === 'lockall') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar canales`.' });
+  const channels = interaction.guild.channels.cache.filter(c => c.isTextBased());
+  await Promise.allSettled(
+    channels.map(ch => ch.permissionOverwrites.edit(interaction.guild.id, { SendMessages: false }))
+  );
+  return interaction.editReply({ content: `🔒 ${channels.size} canales bloqueados.` });
+}
 
-    if (commandName === 'lockall') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar canales`.' });
-      const channels = interaction.guild.channels.cache.filter(c => c.isTextBased());
-      channels.forEach(ch => ch.permissionOverwrites.edit(interaction.guild.id, { SendMessages: false }).catch(() => {}));
-      return interaction.editReply({ content: `🔒 ${channels.size} canales bloqueados.` });
-    }
+if (commandName === 'unlockall') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar canales`.' });
+  const channels = interaction.guild.channels.cache.filter(c => c.isTextBased());
+  await Promise.allSettled(
+    channels.map(ch => ch.permissionOverwrites.edit(interaction.guild.id, { SendMessages: null }))
+  );
+  return interaction.editReply({ content: `🔓 ${channels.size} canales desbloqueados.` });
+}
 
-    if (commandName === 'unlockall') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar canales`.' });
-      const channels = interaction.guild.channels.cache.filter(c => c.isTextBased());
-      channels.forEach(ch => ch.permissionOverwrites.edit(interaction.guild.id, { SendMessages: null }).catch(() => {}));
-      return interaction.editReply({ content: `🔓 ${channels.size} canales desbloqueados.` });
+if (commandName === 'raidmode') {
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar servidor`.' });
+  const estado = interaction.options.getBoolean('estado');
+  try {
+    if (estado) {
+      await interaction.guild.setVerificationLevel(3);
+      await interaction.guild.setExplicitContentFilter(2);
+      return interaction.editReply({ content: '🚨 Modo raid ACTIVADO. Verificación alta + filtro explícito.' });
+    } else {
+      await interaction.guild.setVerificationLevel(1);
+      return interaction.editReply({ content: '✅ Modo raid DESACTIVADO.' });
     }
+  } catch {
+    return interaction.editReply({ content: '❌ Error al cambiar la configuración del servidor.' });
+  }
+}
+    
 
     if (commandName === 'raidmode') {
       if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar servidor`.' });
