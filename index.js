@@ -2,6 +2,9 @@ require('dotenv').config();
 const { Client, GatewayIntentBits, SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, MessageFlags } = require('discord.js');
 const express = require('express');
 
+// PON TU ID AQUÍ - Solo tú puedes usar /paneladmin
+const OWNER_ID = '1433375850996301882'; // ← CAMBIA ESTO POR TU ID DE DISCORD
+
 // 1. Servidor web para Render
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,15 +22,18 @@ const client = new Client({
 });
 
 // 3. Base de datos simple
-const warns = new Map(); // userId -> [{reason, mod, date}]
-const modStats = new Map(); // modId -> {bans: 0, kicks: 0, warns: 0, mutes: 0}
-const caseLogs = new Map(); // caseId -> {type, user, mod, reason, date}
-const userNotes = new Map(); // userId -> [{note, mod, date}]
-const tempRoles = new Map(); // userId -> [{roleId, expires}]
+const warns = new Map();
+const modStats = new Map();
+const caseLogs = new Map();
+const userNotes = new Map();
+const tempRoles = new Map();
+const bannedUsers = new Map();
+const linkedAlts = new Map();
+const dailyLogs = new Map(); // Para el panel admin
 let caseCounter = 1000;
 let antiJoin = false;
 
-// MENSAJES ALEATORIOS - TUS FRASES CON EMOJIS
+// MENSAJES ALEATORIOS
 const mensajesRandom = [
   '😡Portense bien los estoy viendo',
   '😿OH QUE VEN MIS OIDOS',
@@ -45,7 +51,7 @@ const mensajesRandom = [
 client.once('ready', async () => {
   console.log(`✅ XINTOKIO online como ${client.user.tag}`);
   const commands = [
-    // MODERACIÓN - 29 COMANDOS
+    // MODERACIÓN - 33 COMANDOS
     new SlashCommandBuilder().setName('help').setDescription('Muestra todos los comandos'),
     new SlashCommandBuilder().setName('ban').setDescription('Banea a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
     new SlashCommandBuilder().setName('unban').setDescription('Desbanea a un usuario').addStringOption(o => o.setName('userid').setDescription('ID del usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
@@ -62,26 +68,32 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('unlock').setDescription('Desbloquea el canal'),
     new SlashCommandBuilder().setName('slowmode').setDescription('Activa modo lento').addIntegerOption(o => o.setName('segundos').setDescription('0-21600. 0 quita').setRequired(true).setMinValue(0).setMaxValue(21600)),
     new SlashCommandBuilder().setName('decir').setDescription('XINTOKIO envía un mensaje').addStringOption(o => o.setName('mensaje').setDescription('Mensaje').setRequired(true)),
-    // NUEVOS COMANDOS DE TRACKING
+    // TRACKING
     new SlashCommandBuilder().setName('modlogs').setDescription('Ve el historial de moderación de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
     new SlashCommandBuilder().setName('caselog').setDescription('Busca un caso por ID').addIntegerOption(o => o.setName('id').setDescription('ID del caso').setRequired(true)),
     new SlashCommandBuilder().setName('auditlog').setDescription('Muestra las últimas 10 acciones de moderación'),
     new SlashCommandBuilder().setName('purge').setDescription('Borra mensajes de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('cantidad').setDescription('Cantidad 1-100').setRequired(true).setMinValue(1).setMaxValue(100)),
-    // NUEVOS COMANDOS DE CONTROL
+    // CONTROL
     new SlashCommandBuilder().setName('nickname').setDescription('Cambia el apodo de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('apodo').setDescription('Nuevo apodo').setRequired(true)),
     new SlashCommandBuilder().setName('softban').setDescription('Banea y desbanea para borrar mensajes').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
     new SlashCommandBuilder().setName('temprole').setDescription('Da un rol temporal').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addRoleOption(o => o.setName('rol').setDescription('Rol').setRequired(true)).addIntegerOption(o => o.setName('horas').setDescription('Horas 1-168').setRequired(true).setMinValue(1).setMaxValue(168)),
     new SlashCommandBuilder().setName('notes').setDescription('Agrega nota privada a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('nota').setDescription('Nota').setRequired(true)),
     new SlashCommandBuilder().setName('usernotes').setDescription('Ve las notas de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-    // NUEVOS COMANDOS ANTI-RAID
+    // ANTI-RAID
     new SlashCommandBuilder().setName('lockall').setDescription('Bloquea TODOS los canales'),
     new SlashCommandBuilder().setName('unlockall').setDescription('Desbloquea TODOS los canales'),
     new SlashCommandBuilder().setName('raidmode').setDescription('Activa/desactiva modo raid').addBooleanOption(o => o.setName('estado').setDescription('Activar o desactivar').setRequired(true)),
-    new SlashCommandBuilder().setName('antijoin').setDescription('Activa/desactiva antijoin <7 días').addBooleanOption(o => o.setName('estado').setDescription('Activar o desactivar').setRequired(true))
+    new SlashCommandBuilder().setName('antijoin').setDescription('Activa/desactiva antijoin <7 días').addBooleanOption(o => o.setName('estado').setDescription('Activar o desactivar').setRequired(true)),
+    // ANTI-ALT
+    new SlashCommandBuilder().setName('altcheck').setDescription('Revisa si un usuario es posible alt/cuenta nueva').addUserOption(o => o.setName('usuario').setDescription('Usuario sospechoso').setRequired(true)),
+    new SlashCommandBuilder().setName('linkalts').setDescription('Vincula 2 cuentas como alts').addUserOption(o => o.setName('usuario1').setDescription('Cuenta principal').setRequired(true)).addUserOption(o => o.setName('usuario2').setDescription('Cuenta alt').setRequired(true)),
+    new SlashCommandBuilder().setName('banip').setDescription('Banea y marca como ban evader').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
+    // PANEL ADMIN - SOLO DUEÑO
+    new SlashCommandBuilder().setName('paneladmin').setDescription('Panel exclusivo: muestra actividad del día')
   ].map(command => command.toJSON());
 
   await client.application.commands.set(commands);
-  console.log('✅ 29 comandos registrados');
+  console.log('✅ 33 comandos registrados');
 
   // MENSAJES ALEATORIOS CADA 15-30 MIN
   setInterval(() => {
@@ -110,12 +122,28 @@ client.once('ready', async () => {
       if (roles.length === 0) tempRoles.delete(userId);
     });
   }, 60000);
+
+  // RESETEAR LOGS DIARIOS A LAS 00:00
+  setInterval(() => {
+    const now = new Date();
+    if (now.getHours() === 0 && now.getMinutes() === 0) {
+      dailyLogs.clear();
+    }
+  }, 60000);
 });
 
 function addModStat(modId, type) {
   const stats = modStats.get(modId) || { bans: 0, kicks: 0, warns: 0, mutes: 0 };
   stats[type]++;
   modStats.set(modId, stats);
+
+  // Log diario para panel admin
+  const today = new Date().toLocaleDateString('es-PE');
+  const dayLogs = dailyLogs.get(today) || { bans: [], warns: [], mutes: [], roles: [] };
+  if (type === 'bans' || type === 'warns' || type === 'mutes') {
+    dayLogs[type].push(modId);
+    dailyLogs.set(today, dayLogs);
+  }
 }
 
 function createCase(type, userId, modId, reason) {
@@ -134,6 +162,40 @@ function createCase(type, userId, modId, reason) {
 client.on('guildMemberAdd', async member => {
   if (antiJoin && Date.now() - member.user.createdTimestamp < 7 * 24 * 60 * 60 * 1000) {
     await member.kick('Antijoin activado: cuenta <7 días').catch(() => {});
+    return;
+  }
+
+  // ALERTA DE POSIBLE ALT AL ENTRAR
+  const bans = await member.guild.bans.fetch();
+  const edadCuenta = Date.now() - member.user.createdTimestamp;
+  if (edadCuenta < 7 * 24 * 60 * 60 * 1000 && bans.size > 0) {
+    const canalLogs = member.guild.systemChannel || member.guild.channels.cache.find(c => c.name.includes('logs') || c.name.includes('mod'));
+    if (canalLogs) {
+      const embed = new EmbedBuilder()
+.setTitle('⚠️ Posible Alt Detectado')
+.setColor('#FFA500')
+.setDescription(`${member.user.tag} entró al server`)
+.addFields(
+  { name: 'Cuenta creada', value: `<t:${Math.floor(member.user.createdTimestamp/1000)}:R>`, inline: true },
+  { name: 'ID', value: member.id, inline: true },
+  { name: 'Acción recomendada', value: 'Usa `/altcheck @usuario` para revisar', inline: false }
+)
+.setThumbnail(member.user.displayAvatarURL());
+      canalLogs.send({ embeds: [embed] }).catch(() => {});
+    }
+  }
+});
+
+// LOG DE ROLES
+client.on('guildMemberUpdate', async (oldMember, newMember) => {
+  const addedRoles = newMember.roles.cache.filter(r =>!oldMember.roles.cache.has(r.id));
+  if (addedRoles.size > 0) {
+    const today = new Date().toLocaleDateString('es-PE');
+    const dayLogs = dailyLogs.get(today) || { bans: [], warns: [], mutes: [], roles: [] };
+    addedRoles.forEach(role => {
+      dayLogs.roles.push({ user: newMember.id, role: role.name });
+    });
+    dailyLogs.set(today, dayLogs);
   }
 });
 
@@ -154,9 +216,31 @@ client.on('interactionCreate', async interaction => {
         { name: '📋 Tracking/Logs', value: '`/modlogs` `/caselog` `/auditlog` `/notes` `/usernotes`', inline: false },
         { name: '🛠️ Control', value: '`/clear` `/purge` `/nickname` `/softban` `/temprole` `/lock` `/unlock` `/slowmode`', inline: false },
         { name: '🚨 Anti-Raid', value: '`/lockall` `/unlockall` `/raidmode` `/antijoin`', inline: false },
-        { name: '⚙️ Utilidad', value: '`/decir` `/help`', inline: false }
+        { name: '👁️ Anti-Alt', value: '`/altcheck` `/linkalts` `/banip`', inline: false },
+        { name: '⚙️ Utilidad', value: '`/decir` `/help` `/paneladmin`', inline: false }
       )
-.setFooter({ text: 'XINTOKIO Bot | 29 comandos de moderación' });
+.setFooter({ text: 'XINTOKIO Bot | 33 comandos de moderación' });
+      return interaction.editReply({ embeds: [embed] });
+    }
+
+    // PANEL ADMIN - SOLO DUEÑO
+    if (commandName === 'paneladmin') {
+      if (interaction.user.id!== OWNER_ID) return interaction.editReply({ content: '❌ Solo el dueño puede usar este comando.' });
+
+      const today = new Date().toLocaleDateString('es-PE');
+      const dayLogs = dailyLogs.get(today) || { bans: [], warns: [], mutes: [], roles: [] };
+
+      const embed = new EmbedBuilder()
+.setTitle('👑 PANEL ADMIN - Actividad del día')
+.setColor('#FFD700')
+.setDescription(`**Fecha:** ${today}`)
+.addFields(
+  { name: '🔨 Bans de hoy', value: `${dayLogs.bans.length}`, inline: true },
+  { name: '⚠️ Warns de hoy', value: `${dayLogs.warns.length}`, inline: true },
+  { name: '🔇 Mutes de hoy', value: `${dayLogs.mutes.length}`, inline: true },
+  { name: '👤 Roles dados hoy', value: dayLogs.roles.length > 0? dayLogs.roles.map(r => `<@${r.user}> → ${r.role}`).slice(0, 10).join('\n') : 'Ninguno', inline: false }
+)
+.setFooter({ text: 'Solo visible para el dueño' });
       return interaction.editReply({ embeds: [embed] });
     }
 
@@ -166,6 +250,7 @@ client.on('interactionCreate', async interaction => {
       const reason = interaction.options.getString('razon') || 'No especificada';
       await interaction.guild.members.ban(user, { reason: `Por ${interaction.user.tag}: ${reason}` });
       addModStat(interaction.user.id, 'bans');
+      bannedUsers.set(user.id, { reason, date: new Date().toLocaleString('es-PE') });
       const caseId = createCase('ban', user.id, interaction.user.id, reason);
       const embed = new EmbedBuilder().setColor('#FF0000').setTitle('🔨 Usuario Baneado').setDescription(`**${user.tag}** fue baneado.`).addFields({ name: 'Razón', value: reason }, { name: 'Moderador', value: `${interaction.user}` }).setFooter({ text: `Caso #${caseId}` });
       return interaction.editReply({ embeds: [embed] });
@@ -176,6 +261,7 @@ client.on('interactionCreate', async interaction => {
       const userid = interaction.options.getString('userid');
       const reason = interaction.options.getString('razon') || 'No especificada';
       await interaction.guild.members.unban(userid, `Por ${interaction.user.tag}: ${reason}`);
+      bannedUsers.delete(userid);
       return interaction.editReply({ content: `✅ Usuario \`${userid}\` desbaneado. Razón: ${reason}` });
     }
 
@@ -418,11 +504,11 @@ client.on('interactionCreate', async interaction => {
       if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar servidor`.' });
       const estado = interaction.options.getBoolean('estado');
       if (estado) {
-        await interaction.guild.setVerificationLevel(3); // Alto
-        await interaction.guild.setExplicitContentFilter(2); // Todo
+        await interaction.guild.setVerificationLevel(3);
+        await interaction.guild.setExplicitContentFilter(2);
         return interaction.editReply({ content: '🚨 Modo raid ACTIVADO. Verificación alta + filtro explícito.' });
       } else {
-        await interaction.guild.setVerificationLevel(1); // Bajo
+        await interaction.guild.setVerificationLevel(1);
         return interaction.editReply({ content: '✅ Modo raid DESACTIVADO.' });
       }
     }
@@ -470,6 +556,116 @@ client.on('interactionCreate', async interaction => {
       const mensaje = interaction.options.getString('mensaje');
       await interaction.channel.send(mensaje);
       return interaction.editReply({ content: '✅ Enviado.' });
+    }
+
+    // ALTCHECK - DETECTOR DE ALTS
+    if (commandName === 'altcheck') {
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ModerateMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Moderar miembros`.' });
+      const user = interaction.options.getUser('usuario');
+      const member = await interaction.guild.members.fetch(user.id).catch(() => null);
+      if (!member) return interaction.editReply({ content: '❌ Ese usuario no está en el servidor.' });
+
+      let sospecha = 0;
+      let razones = [];
+
+      const edadCuenta = Date.now() - user.createdTimestamp;
+      if (edadCuenta < 7 * 24 * 60 * 60 * 1000) {
+        sospecha += 40;
+        razones.push(`⚠️ Cuenta creada hace ${Math.floor(edadCuenta / (24*60*60*1000))} días`);
+      }
+
+      const edadServer = Date.now() - member.joinedTimestamp;
+      if (edadServer < 24 * 60 * 1000) {
+        sospecha += 20;
+        razones.push(`⚠️ Entró al servidor hace ${Math.floor(edadServer / (60*60*1000))} horas`);
+      }
+
+      if (linkedAlts.has(user.id)) {
+        sospecha += 50;
+        const alts = linkedAlts.get(user.id).map(id => `<@${id}>`).join(', ');
+        razones.push(`🚨 Marcado como alt de: ${alts}`);
+      }
+
+      const bans = await interaction.guild.bans.fetch();
+      const baneadoSimilar = bans.find(b =>
+        b.user.username.toLowerCase() === user.username.toLowerCase() ||
+        b.user.avatar === user.avatar
+      );
+      if (baneadoSimilar) {
+        sospecha += 60;
+        razones.push(`🚨 Nombre/Avatar igual a baneado: ${baneadoSimilar.user.tag}`);
+      }
+
+      const color = sospecha >= 70? '#FF0000' : sospecha >= 40? '#FFA500' : '#00FF00';
+      const nivel = sospecha >= 70? 'ALTA' : sospecha >= 40? 'MEDIA' : 'BAJA';
+
+      const embed = new EmbedBuilder()
+.setTitle(`🔍 AltCheck de ${user.tag}`)
+.setColor(color)
+.addFields(
+  { name: 'Probabilidad de Alt', value: `**${nivel}** - ${sospecha}%`, inline: false },
+  { name: 'ID', value: user.id, inline: true },
+  { name: 'Cuenta creada', value: `<t:${Math.floor(user.createdTimestamp/1000)}:R>`, inline: true },
+  { name: 'Entró al server', value: `<t:${Math.floor(member.joinedTimestamp/1000)}:R>`, inline: true },
+  { name: 'Banderas detectadas', value: razones.length > 0? razones.join('\n') : '✅ Sin banderas sospechosas', inline: false }
+)
+.setThumbnail(user.displayAvatarURL());
+
+      return interaction.editReply({ embeds: [embed] });
+    }
+
+    // LINKALTS - VINCULAR CUENTAS
+    if (commandName === 'linkalts') {
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ModerateMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Moderar miembros`.' });
+      const user1 = interaction.options.getUser('usuario1');
+      const user2 = interaction.options.getUser('usuario2');
+
+      if (user1.id === user2.id) return interaction.editReply({ content: '❌ No puedes vincular la misma cuenta.' });
+
+      const alts1 = linkedAlts.get(user1.id) || [];
+      const alts2 = linkedAlts.get(user2.id) || [];
+
+      if (!alts1.includes(user2.id)) alts1.push(user2.id);
+      if (!alts2.includes(user1.id)) alts2.push(user1.id);
+
+      linkedAlts.set(user1.id, alts1);
+      linkedAlts.set(user2.id, alts2);
+
+      const embed = new EmbedBuilder()
+.setTitle('🔗 Alts Vinculados')
+.setColor('#9370DB')
+.setDescription(`**${user1.tag}** y **${user2.tag}** ahora están marcados como alts.`)
+.addFields(
+  { name: 'Acción', value: 'Si uno es baneado, el otro saltará en `/altcheck`', inline: false },
+  { name: 'Moderador', value: `${interaction.user}`, inline: true }
+);
+
+      return interaction.editReply({ embeds: [embed] });
+    }
+
+    // BANIP - BANEAR + MARCAR BAN EVADER
+    if (commandName === 'banip') {
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.BanMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Banear miembros`.' });
+      const user = interaction.options.getUser('usuario');
+      const reason = interaction.options.getString('razon') || 'Ban evader detectado';
+
+      await interaction.guild.members.ban(user, { reason: `BanIP por ${interaction.user.tag}: ${reason}` });
+      bannedUsers.set(user.id, { reason: `${reason} - BAN EVADER`, date: new Date().toLocaleString('es-PE') });
+      addModStat(interaction.user.id, 'bans');
+      const caseId = createCase('banip', user.id, interaction.user.id, reason);
+
+      const embed = new EmbedBuilder()
+.setTitle('🚫 BanIP - Ban Evader Baneado')
+.setColor('#8B0000')
+.setDescription(`**${user.tag}** fue baneado y marcado como ban evader.`)
+.addFields(
+  { name: 'Razón', value: reason, inline: false },
+  { name: 'Moderador', value: `${interaction.user}`, inline: true },
+  { name: 'Caso', value: `#${caseId}`, inline: true },
+  { name: 'Aviso', value: 'Si crea otra cuenta y entra, `/altcheck` lo detectará', inline: false }
+);
+
+      return interaction.editReply({ embeds: [embed] });
     }
 
   } catch (error) {
