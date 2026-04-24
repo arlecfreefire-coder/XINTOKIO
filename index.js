@@ -60,7 +60,6 @@ const mensajesRandom = [
   '😴Hora de dormír',
   '🤖Los vigilo 24/7'
 ];
-
 // 4. Evento ready
 client.once('ready', async () => {
   console.log(`✅ XINTOKIO online como ${client.user.tag}`);
@@ -68,10 +67,10 @@ client.once('ready', async () => {
     
 // MODERACIÓN BÁSICA - 33 COMANDOS
     new SlashCommandBuilder().setName('help').setDescription('Muestra todos los comandos'),
-    new SlashCommandBuilder().setName('ban').setDescription('Banea a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
-    new SlashCommandBuilder().setName('unban').setDescription('Desbanea a un usuario').addStringOption(o => o.setName('userid').setDescription('ID del usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
-    new SlashCommandBuilder().setName('kick').setDescription('Expulsa a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
-    new SlashCommandBuilder().setName('mute').setDescription('Silencia a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('minutos').setDescription('Minutos 1-10080').setRequired(true).setMinValue(1).setMaxValue(10080)).addStringOption(o => o.setName('razon').setDescription('Razón')),
+    new SlashCommandBuilder().setName('ban').setDescription('Banea a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
+    new SlashCommandBuilder().setName('unban').setDescription('Desbanea a un usuario').addStringOption(o => o.setName('userid').setDescription('ID del usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
+    new SlashCommandBuilder().setName('kick').setDescription('Expulsa a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
+    new SlashCommandBuilder().setName('mute').setDescription('Silencia a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('minutos').setDescription('Minutos 1-10080').setRequired(true).setMinValue(1).setMaxValue(10080))).addStringOption(o => o.setName('razon').setDescription('Razón')),
     new SlashCommandBuilder().setName('unmute').setDescription('Quita el timeout').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
     new SlashCommandBuilder().setName('warn').setDescription('Advierte a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón').setRequired(true)),
     new SlashCommandBuilder().setName('unwarn').setDescription('Quita un warn a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('numero').setDescription('Número de warn a quitar. Deja vacío para quitar todos').setMinValue(1)),
@@ -86,9 +85,9 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('modlogs').setDescription('Ve el historial de moderación de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
     new SlashCommandBuilder().setName('caselog').setDescription('Busca un caso por ID').addIntegerOption(o => o.setName('id').setDescription('ID del caso').setRequired(true)),
     new SlashCommandBuilder().setName('auditlog').setDescription('Muestra las últimas 10 acciones de moderación'),
-    new SlashCommandBuilder().setName('purge').setDescription('Borra mensajes de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('cantidad').setDescription('Cantidad 1-100').setRequired(true).setMinValue(1).setMaxValue(100)),
+    new SlashCommandBuilder().setName('purge').setDescription('Borra mensajes de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('cantidad').setDescription('Cantidad 1-100').setRequired(true).setMinValue(1).setMaxValue(100))),
     new SlashCommandBuilder().setName('nickname').setDescription('Cambia el apodo de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('apodo').setDescription('Nuevo apodo').setRequired(true)),
-    new SlashCommandBuilder().setName('softban').setDescription('Banea y desbanea para borrar mensajes').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
+    new SlashCommandBuilder().setName('softban').setDescription('Banea y desbanea para borrar mensajes').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
     new SlashCommandBuilder().setName('temprole').setDescription('Da un rol temporal').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addRoleOption(o => o.setName('rol').setDescription('Rol').setRequired(true)).addIntegerOption(o => o.setName('horas').setDescription('Horas 1-168').setRequired(true).setMinValue(1).setMaxValue(168)),
     new SlashCommandBuilder().setName('notes').setDescription('Agrega nota privada a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('nota').setDescription('Nota').setRequired(true)),
     new SlashCommandBuilder().setName('usernotes').setDescription('Ve las notas de un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
@@ -98,19 +97,19 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('antijoin').setDescription('Activa/desactiva antijoin <7 días').addBooleanOption(o => o.setName('estado').setDescription('Activar o desactivar').setRequired(true)),
     new SlashCommandBuilder().setName('altcheck').setDescription('Revisa si un usuario es posible alt/cuenta nueva').addUserOption(o => o.setName('usuario').setDescription('Usuario sospechoso').setRequired(true)),
     new SlashCommandBuilder().setName('linkalts').setDescription('Vincula 2 cuentas como alts').addUserOption(o => o.setName('usuario1').setDescription('Cuenta principal').setRequired(true)).addUserOption(o => o.setName('usuario2').setDescription('Cuenta alt').setRequired(true)),
-    new SlashCommandBuilder().setName('banip').setDescription('Banea y marca como ban evader').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
+    new SlashCommandBuilder().setName('banip').setDescription('Banea y marca como ban evader').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón'))),
     new SlashCommandBuilder().setName('paneladmin').setDescription('Panel exclusivo: muestra actividad del día'),
 
     // ESTUDIO - 12 COMANDOS
     new SlashCommandBuilder().setName('pomodoro').setDescription('Timer Pomodoro').addSubcommand(s => s.setName('start').setDescription('Inicia pomodoro').addIntegerOption(o => o.setName('minutos').setDescription('Minutos. Default 25').setMinValue(5).setMaxValue(120))).addSubcommand(s => s.setName('stop').setDescription('Cancela tu pomodoro')),
-    new SlashCommandBuilder().setName('study').setDescription('Manda a alguien a estudiar').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('minutos').setDescription('Minutos').setRequired(true).setMinValue(5).setMaxValue(180)),
-    new SlashCommandBuilder().setName('recordatorio').setDescription('Te mando DM en X tiempo').addStringOption(o => o.setName('tiempo').setDescription('Ej: 30m, 2h, 1d').setRequired(true)).addStringOption(o => o.setName('mensaje').setDescription('Qué recordar').setRequired(true)),
+    new SlashCommandBuilder().setName('study').setDescription('Manda a alguien a estudiar').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('minutos').setDescription('Minutos').setRequired(true).setMinValue(5).setMaxValue(180))),
+    new SlashCommandBuilder().setName('recordatorio').setDescription('Te mando DM en X tiempo').addStringOption(o => o.setName('tiempo').setDescription('Ej: 30m, 2h, 1d').setRequired(true)).addStringOption(o => o.setName('mensaje').setDescription('Qué recordar').setRequired(true))),
     new SlashCommandBuilder().setName('todolist').setDescription('Tu lista de tareas').addSubcommand(s => s.setName('add').setDescription('Agregar').addStringOption(o => o.setName('tarea').setDescription('Tarea').setRequired(true))).addSubcommand(s => s.setName('ver').setDescription('Ver lista')).addSubcommand(s => s.setName('done').setDescription('Tachar').addIntegerOption(o => o.setName('numero').setDescription('Número').setRequired(true))).addSubcommand(s => s.setName('clear').setDescription('Borrar todo')),
-    new SlashCommandBuilder().setName('focus').setDescription('Modo focus on/off').addBooleanOption(o => o.setName('estado').setDescription('on/off').setRequired(true)).addChannelOption(o => o.setName('canal').setDescription('Canal de estudio')),
+    new SlashCommandBuilder().setName('focus').setDescription('Modo focus on/off').addBooleanOption(o => o.setName('estado').setDescription('on/off').setRequired(true)).addChannelOption(o => o.setName('canal').setDescription('Canal de estudio'))),
     new SlashCommandBuilder().setName('rutina').setDescription('Tu horario de estudio').addSubcommand(s => s.setName('add').setDescription('Agregar').addStringOption(o => o.setName('dia').setDescription('Lunes, Martes...').setRequired(true)).addStringOption(o => o.setName('horario').setDescription('Ej: 3pm-5pm Mate').setRequired(true))).addSubcommand(s => s.setName('ver').setDescription('Ver rutina')).addSubcommand(s => s.setName('clear').setDescription('Borrar rutina')),
     new SlashCommandBuilder().setName('calc').setDescription('Calculadora').addStringOption(o => o.setName('operacion').setDescription('Ej: 2+2*5').setRequired(true)),
     new SlashCommandBuilder().setName('define').setDescription('Define una palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true)),
-    new SlashCommandBuilder().setName('traducir').setDescription('Traduce texto').addStringOption(o => o.setName('idioma').setDescription('en, es, fr...').setRequired(true)).addStringOption(o => o.setName('texto').setDescription('Texto').setRequired(true)),
+    new SlashCommandBuilder().setName('traducir').setDescription('Traduce texto').addStringOption(o => o.setName('idioma').setDescription('en, es, fr...').setRequired(true)).addStringOption(o => o.setName('texto').setDescription('Texto').setRequired(true))),
     new SlashCommandBuilder().setName('notas').setDescription('Tus notas privadas').addSubcommand(s => s.setName('guardar').setDescription('Guardar nota').addStringOption(o => o.setName('titulo').setDescription('Título').setRequired(true)).addStringOption(o => o.setName('contenido').setDescription('Contenido').setRequired(true))).addSubcommand(s => s.setName('ver').setDescription('Ver todas')).addSubcommand(s => s.setName('borrar').setDescription('Borrar nota').addStringOption(o => o.setName('titulo').setDescription('Título').setRequired(true))),
     new SlashCommandBuilder().setName('countdown').setDescription('Cuenta regresiva').addStringOption(o => o.setName('evento').setDescription('Examen final').setRequired(true)).addStringOption(o => o.setName('tiempo').setDescription('5d, 12h').setRequired(true))),
     new SlashCommandBuilder().setName('whitenoise').setDescription('Link de ruido blanco para concentrarse'),
@@ -138,10 +137,11 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('nuke').setDescription('Clona y borra el canal actual'),
     new SlashCommandBuilder().setName('susmode').setDescription('Ban a nuevos con link').addBooleanOption(o => o.setName('estado').setDescription('ON/OFF').setRequired(true)),
     new SlashCommandBuilder().setName('fakeban').setDescription('Ban falso troll').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-]).map(command => command.toJSON());
-await client.application.commands.set([]); // ← AGREGA ESTA LÍNEA SOLO 1 VEZ
-await client.application.commands.set(commands);
-console.log('✅ 57 comandos registrados'); // ← CÁMBIALO A 57
+  ].map(command => command.toJSON());
+  await client.application.commands.set([]);
+  await client.application.commands.set(commands);
+  console.log('✅ 57 comandos registrados');
+});
 
   setInterval(() => {
     const guilds = client.guilds.cache;
