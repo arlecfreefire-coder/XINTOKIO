@@ -1,10 +1,10 @@
 {
   "name": "xintokio",
   "version": "2.0.0",
-  "description": "XINTOKIO Bot - Moderación + Auto mensajes",
-  "main": "index.js",
+  "description": "XINTOKIO Bot - Moderación + Estudio",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/index.js"
   },
   "engines": {
     "node": ">=18.0.0"
