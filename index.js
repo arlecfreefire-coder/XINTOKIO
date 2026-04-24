@@ -66,7 +66,8 @@ const mensajesRandom = [
 client.once('ready', async () => {
   console.log(`✅ XINTOKIO online como ${client.user.tag}`);
   const commands = [
-    // MODERACIÓN BÁSICA - 33 COMANDOS
+    
+// MODERACIÓN BÁSICA - 33 COMANDOS
     new SlashCommandBuilder().setName('help').setDescription('Muestra todos los comandos'),
     new SlashCommandBuilder().setName('ban').setDescription('Banea a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
     new SlashCommandBuilder().setName('unban').setDescription('Desbanea a un usuario').addStringOption(o => o.setName('userid').setDescription('ID del usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
@@ -102,7 +103,7 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('paneladmin').setDescription('Panel exclusivo: muestra actividad del día'),
 
     // ESTUDIO - 12 COMANDOS
-    new SlashCommandBuilder().setName('pomodoro').setDescription('Timer Pomodoro').addIntegerOption(o => o.setName('minutos').setDescription('Minutos. Default 25').setMinValue(5).setMaxValue(120)).addSubcommand(s => s.setName('stop').setDescription('Cancela tu pomodoro')),
+    new SlashCommandBuilder().setName('pomodoro').setDescription('Timer Pomodoro').addSubcommand(s => s.setName('start').setDescription('Inicia pomodoro').addIntegerOption(o => o.setName('minutos').setDescription('Minutos. Default 25').setMinValue(5).setMaxValue(120))).addSubcommand(s => s.setName('stop').setDescription('Cancela tu pomodoro')),
     new SlashCommandBuilder().setName('study').setDescription('Manda a alguien a estudiar').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('minutos').setDescription('Minutos').setRequired(true).setMinValue(5).setMaxValue(180)),
     new SlashCommandBuilder().setName('recordatorio').setDescription('Te mando DM en X tiempo').addStringOption(o => o.setName('tiempo').setDescription('Ej: 30m, 2h, 1d').setRequired(true)).addStringOption(o => o.setName('mensaje').setDescription('Qué recordar').setRequired(true)),
     new SlashCommandBuilder().setName('todolist').setDescription('Tu lista de tareas').addSubcommand(s => s.setName('add').setDescription('Agregar').addStringOption(o => o.setName('tarea').setDescription('Tarea').setRequired(true))).addSubcommand(s => s.setName('ver').setDescription('Ver lista')).addSubcommand(s => s.setName('done').setDescription('Tachar').addIntegerOption(o => o.setName('numero').setDescription('Número').setRequired(true))).addSubcommand(s => s.setName('clear').setDescription('Borrar todo')),
@@ -120,26 +121,25 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('iamode').setDescription('Activa IA en este canal').addBooleanOption(o => o.setName('estado').setDescription('on/off').setRequired(true)),
 
     // MOD PRO NUEVOS
-new SlashCommandBuilder().setName('massban').setDescription('Banea varios usuarios').addStringOption(o => o.setName('usuarios').setDescription('IDs separados por espacio').setRequired(true)),
-new SlashCommandBuilder().setName('userinfo').setDescription('Info completa de un user').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-new SlashCommandBuilder().setName('roleall').setDescription('Da rol a todos').addRoleOption(o => o.setName('rol').setDescription('Rol a dar').setRequired(true)),
-new SlashCommandBuilder().setName('vcban').setDescription('Banea de canales de voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
+    new SlashCommandBuilder().setName('massban').setDescription('Banea varios usuarios').addStringOption(o => o.setName('usuarios').setDescription('IDs separados por espacio').setRequired(true)),
+    new SlashCommandBuilder().setName('userinfo').setDescription('Info completa de un user').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
+    new SlashCommandBuilder().setName('roleall').setDescription('Da rol a todos').addRoleOption(o => o.setName('rol').setDescription('Rol a dar').setRequired(true)),
+    new SlashCommandBuilder().setName('vcban').setDescription('Banea de canales de voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
 
-// LOGS Y AUTOSPY
-new SlashCommandBuilder().setName('messagelogs').setDescription('Ultimos mensajes borrados'),
-new SlashCommandBuilder().setName('joinlogs').setDescription('Cuando entro un user').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-new SlashCommandBuilder().setName('invites').setDescription('Top invites del server'),
-new SlashCommandBuilder().setName('antispam').setDescription('Activa anti-spam').addBooleanOption(o => o.setName('estado').setDescription('ON/OFF').setRequired(true)),
-new SlashCommandBuilder().setName('badword').setDescription('Lista negra de palabras').addSubcommand(s => s.setName('add').setDescription('Agrega palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true))).addSubcommand(s => s.setName('remove').setDescription('Quita palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true))).addSubcommand(s => s.setName('list').setDescription('Ver lista')),
+    // LOGS Y AUTOSPY
+    new SlashCommandBuilder().setName('messagelogs').setDescription('Ultimos mensajes borrados'),
+    new SlashCommandBuilder().setName('joinlogs').setDescription('Cuando entro un user').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
+    new SlashCommandBuilder().setName('invites').setDescription('Top invites del server'),
+    new SlashCommandBuilder().setName('antispam').setDescription('Activa anti-spam').addBooleanOption(o => o.setName('estado').setDescription('ON/OFF').setRequired(true)),
+    new SlashCommandBuilder().setName('badword').setDescription('Lista negra de palabras').addSubcommand(s => s.setName('add').setDescription('Agrega palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true))).addSubcommand(s => s.setName('remove').setDescription('Quita palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true))).addSubcommand(s => s.setName('list').setDescription('Ver lista')),
 
-// ANTI-TOXIC EXTRA
-new SlashCommandBuilder().setName('massnick').setDescription('Cambia apodo a todos').addStringOption(o => o.setName('apodo').setDescription('Nuevo apodo').setRequired(true)),
-new SlashCommandBuilder().setName('deafen').setDescription('Ensordece en voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-new SlashCommandBuilder().setName('nuke').setDescription('Clona y borra el canal actual'),
-new SlashCommandBuilder().setName('susmode').setDescription('Ban a nuevos con link').addBooleanOption(o => o.setName('estado').setDescription('ON/OFF').setRequired(true)),
-new SlashCommandBuilder().setName('fakeban').setDescription('Ban falso troll').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true))
+    // ANTI-TOXIC EXTRA
+    new SlashCommandBuilder().setName('massnick').setDescription('Cambia apodo a todos').addStringOption(o => o.setName('apodo').setDescription('Nuevo apodo').setRequired(true)),
+    new SlashCommandBuilder().setName('deafen').setDescription('Ensordece en voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
+    new SlashCommandBuilder().setName('nuke').setDescription('Clona y borra el canal actual'),
+    new SlashCommandBuilder().setName('susmode').setDescription('Ban a nuevos con link').addBooleanOption(o => o.setName('estado').setDescription('ON/OFF').setRequired(true)),
+    new SlashCommandBuilder().setName('fakeban').setDescription('Ban falso troll').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
 ]).map(command => command.toJSON());
-
   await client.application.commands.set(commands);
   console.log('✅ 58 comandos registrados');
 
