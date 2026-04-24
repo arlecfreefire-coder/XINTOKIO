@@ -41,7 +41,6 @@ const antispam = new Map();
 const badwords = new Map();
 const nicklocked = new Map();
 const spamCache = new Map();
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 let caseCounter = 1000;
 let antiJoin = false;
 
