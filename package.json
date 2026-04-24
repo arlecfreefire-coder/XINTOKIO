@@ -1,17 +1,17 @@
 {
   "name": "xintokio",
-  "version": "1.0.0",
-  "description": "Bot de Discord XINTOKIO 24/7",
+  "version": "2.0.0",
+  "description": "XINTOKIO Bot - Moderación + Auto mensajes",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "dependencies": {
-    "discord.js": "14.15.3",
-    "express": "4.18.2",
-    "dotenv": "16.4.5"
-  },
   "engines": {
-    "node": ">=18.0.0 <21.0.0"
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5"
   }
 }
