@@ -251,24 +251,7 @@ client.on('interactionCreate', async interaction => {
   try {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-    if (commandName === 'help') {
-      const embed = new EmbedBuilder()
-.setTitle('🤖 Comandos de XINTOKIO')
-.setColor('#FF69B4')
-.addFields(
-        { name: '🔨 Moderación', value: '`/ban` `/unban` `/kick` `/mute` `/unmute` `/warn` `/unwarn` `/warns` `/banlist` `/modstats` `/massban`', inline: false },
-        { name: '📋 Info/Logs', value: '`/userinfo` `/modlogs` `/caselog` `/auditlog` `/messagelogs` `/joinlogs` `/invites`', inline: false },
-        { name: '🛠️ Control', value: '`/clear` `/purge` `/nickname` `/softban` `/temprole` `/lock` `/unlock` `/slowmode` `/roleall` `/vcban` `/nicklock`', inline: false },
-        { name: '🚨 Anti-Raid', value: '`/lockall` `/unlockall` `/raidmode` `/antijoin` `/altcheck` `/linkalts` `/banip`', inline: false },
-        { name: '📚 Estudio', value: '`/pomodoro` `/study` `/recordatorio` `/todolist` `/focus` `/rutina` `/calc` `/define` `/traducir` `/notas` `/countdown` `/whitenoise`', inline: false },
-        { name: '🤖 IA', value: '`/ask` `/iamode`', inline: false },
-        { name: '🛡️ Auto-Mod', value: '`/antispam` `/badword` `/susmode`', inline: false },
-        { name: '🔥 Anti-Toxic', value: '`/massnick` `/deafen` `/nuke` `/fakeban`', inline: false },
-        { name: '⚙️ Utilidad', value: '`/decir` `/paneladmin`', inline: false }
-      )
-.setFooter({ text: 'XINTOKIO Bot | 58 comandos' });
-      return interaction.editReply({ embeds: [embed] });
-    }
+    
 
     if (commandName === 'paneladmin') {
       if (interaction.user.id!== OWNER_ID) return interaction.editReply({ content: '❌ Solo el dueño puede usar este comando.' });
@@ -279,7 +262,24 @@ client.on('interactionCreate', async interaction => {
 .setColor('#FFD700')
 .setDescription(`**Fecha:** ${today}`)
 .addFields(
-  { name: '🔨 Bans de hoy', value: `${dayLogs.bans.length}`, inline: true },
+  { name: '🔨 Bans if (commandName === 'help') {
+  const embed = new EmbedBuilder()
+   .setTitle('🤖 Comandos de XINTOKIO')
+   .setColor('#FF69B4')
+   .addFields(
+      { name: '🔨 Moderación', value: '`/ban` `/unban` `/kick` `/mute` `/unmute` `/warn` `/unwarn` `/warns` `/banlist` `/modstats` `/massban`', inline: false },
+      { name: '📋 Info/Logs', value: '`/userinfo` `/modlogs` `/caselog` `/auditlog` `/messagelogs` `/joinlogs` `/invites`', inline: false },
+      { name: '🛠️ Control', value: '`/clear` `/purge` `/nickname` `/softban` `/temprole` `/lock` `/unlock` `/slowmode` `/roleall` `/vcban`', inline: false },
+      { name: '🚨 Anti-Raid', value: '`/lockall` `/unlockall` `/raidmode` `/antijoin` `/altcheck` `/linkalts` `/banip`', inline: false },
+      { name: '📚 Estudio', value: '`/pomodoro` `/study` `/recordatorio` `/todolist` `/focus` `/rutina` `/calc` `/define` `/traducir` `/notas` `/countdown` `/whitenoise`', inline: false },
+      { name: '🤖 IA', value: '`/ask` `/iamode`', inline: false },
+      { name: '🛡️ Auto-Mod', value: '`/antispam` `/badword` `/susmode`', inline: false },
+      { name: '🔥 Anti-Toxic', value: '`/massnick` `/deafen` `/nuke` `/fakeban`', inline: false },
+      { name: '⚙️ Utilidad', value: '`/decir` `/paneladmin`', inline: false }
+    )
+   .setFooter({ text: 'XINTOKIO Bot | 57 comandos' });
+  return interaction.editReply({ embeds: [embed] });
+    }de hoy', value: `${dayLogs.bans.length}`, inline: true },
   { name: '⚠️ Warns de hoy', value: `${dayLogs.warns.length}`, inline: true },
   { name: '🔇 Mutes de hoy', value: `${dayLogs.mutes.length}`, inline: true },
   { name: '👤 Roles dados hoy', value: dayLogs.roles.length > 0? dayLogs.roles.map(r => `<@${r.user}> → ${r.role}`).slice(0, 10).join('\n') : 'Ninguno', inline: false }
