@@ -112,9 +112,9 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('define').setDescription('Define una palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true)),
     new SlashCommandBuilder().setName('traducir').setDescription('Traduce texto').addStringOption(o => o.setName('idioma').setDescription('en, es, fr...').setRequired(true)).addStringOption(o => o.setName('texto').setDescription('Texto').setRequired(true)),
     new SlashCommandBuilder().setName('notas').setDescription('Tus notas privadas').addSubcommand(s => s.setName('guardar').setDescription('Guardar nota').addStringOption(o => o.setName('titulo').setDescription('Título').setRequired(true)).addStringOption(o => o.setName('contenido').setDescription('Contenido').setRequired(true))).addSubcommand(s => s.setName('ver').setDescription('Ver todas')).addSubcommand(s => s.setName('borrar').setDescription('Borrar nota').addStringOption(o => o.setName('titulo').setDescription('Título').setRequired(true))),
-    new SlashCommandBuilder().setName('countdown').setDescription('Cuenta regresiva').addStringOption(o => o.setName('evento').setDescription('Examen final').setRequired(true)).addStringOption(o => o.setName('tiempo').setDescription('5d, 12h').setRequired(true)),
+    new SlashCommandBuilder().setName('countdown').setDescription('Cuenta regresiva').addStringOption(o => o.setName('evento').setDescription('Examen final').setRequired(true)).addStringOption(o => o.setName('tiempo').setDescription('5d, 12h').setRequired(true))),
     new SlashCommandBuilder().setName('whitenoise').setDescription('Link de ruido blanco para concentrarse'),
-
+    
     // IA PARA TODOS
     new SlashCommandBuilder().setName('ask').setDescription('Pregúntale algo a XINTOKIO IA').addStringOption(o => o.setName('pregunta').setDescription('Tu pregunta').setRequired(true)),
     new SlashCommandBuilder().setName('iamode').setDescription('Activa IA en este canal').addBooleanOption(o => o.setName('estado').setDescription('on/off').setRequired(true)),
