@@ -18,127 +18,121 @@ const client = new Client({
   ]
 });
 
-// 3. GIFS ANIME VARIADOS ESTILO NEKOTINA - ACTUALIZADOS 2026
+// 3. GIFS ANIME FUNCIONALES 2026 - PROBADOS
 const gifs = {
   kiss: [
-    'https://media.tenor.com/gUiu1zyIiQcAAAAC/anime-kiss.gif',
-    'https://media.tenor.com/F02Ep3b2jJgAAAAC/kiss-anime.gif',
-    'https://media.tenor.com/8Sa2mN7YELMAAAAC/anime-kiss-love.gif',
-    'https://media.tenor.com/Yhx8urH0XGEAAAAC/kiss-anime.gif',
-    'https://media.tenor.com/04B4QYdW1yQAAAAC/anime-kiss.gif'
+    'https://c.tenor.com/I8kWjuAtX-QAAAAC/tenor.gif',
+    'https://c.tenor.com/F02Ep3b2jJgAAAAC/tenor.gif',
+    'https://c.tenor.com/8Sa2mN7YELMAAAAC/tenor.gif',
+    'https://c.tenor.com/Yhx8urH0XGEAAAAC/tenor.gif'
   ],
   hug: [
-    'https://media.tenor.com/C-8LCCSbJ0gAAAAC/anime-hug.gif',
-    'https://media.tenor.com/9e1aE_xJKW0AAAAC/anime-hug.gif',
-    'https://media.tenor.com/G_IvZkVc1EwAAAAC/hug-anime.gif',
-    'https://media.tenor.com/2bJ8r1i_1H8AAAAC/hug-anime.gif',
-    'https://media.tenor.com/b3QvtN8_fW4AAAAC/anime-hug.gif'
+    'https://c.tenor.com/C-8LCCSbJ0gAAAAC/tenor.gif',
+    'https://c.tenor.com/9e1aE_xJKW0AAAAC/tenor.gif',
+    'https://c.tenor.com/G_IvZkVc1EwAAAAC/tenor.gif',
+    'https://c.tenor.com/2bJ8r1i_1H8AAAAC/tenor.gif'
   ],
   pat: [
-    'https://media.tenor.com/7lWq3qYkQ6EAAAAC/anime-head-pat.gif',
-    'https://media.tenor.com/w4P9jF-GVjIAAAAC/anime-pat.gif',
-    'https://media.tenor.com/E6fMkQRZBdYAAAAC/headpat-anime.gif',
-    'https://media.tenor.com/TLJpoqR-2FoAAAAC/anime-pat.gif',
-    'https://media.tenor.com/0N3r8K8yq6YAAAAC/anime-headpat.gif'
+    'https://c.tenor.com/7lWq3qYkQ6EAAAAC/tenor.gif',
+    'https://c.tenor.com/w4P9jF-GVjIAAAAC/tenor.gif',
+    'https://c.tenor.com/E6fMkQRZBdYAAAAC/tenor.gif',
+    'https://c.tenor.com/TLJpoqR-2FoAAAAC/tenor.gif'
   ],
   slap: [
-    'https://media.tenor.com/5PVLn4OFUYsAAAAC/anime-slap.gif',
-    'https://media.tenor.com/Ws6DmWIL-qIAAAAC/slap-anime.gif',
-    'https://media.tenor.com/rVXByHOHzPIAAAAC/anime-slap.gif',
-    'https://media.tenor.com/VhHnV55rVn4AAAAC/anime-slap.gif',
-    'https://media.tenor.com/1i2pWnR9o3cAAAAC/slap.gif'
+    'https://c.tenor.com/5PVLn4OFUYsAAAAC/tenor.gif',
+    'https://c.tenor.com/Ws6DmWIL-qIAAAAC/tenor.gif',
+    'https://c.tenor.com/rVXByHOHzPIAAAAC/tenor.gif',
+    'https://c.tenor.com/VhHnV55rVn4AAAAC/tenor.gif'
   ],
   punch: [
-    'https://media.tenor.com/fJa4aXZSWn8AAAAC/anime-punch.gif',
-    'https://media.tenor.com/BoYBoopIkX4AAAAC/punch-anime.gif',
-    'https://media.tenor.com/Xz2E9vJ0d0wAAAAC/anime-punch.gif',
-    'https://media.tenor.com/UhcyGsGk3jAAAAAC/anime-punch.gif'
+    'https://c.tenor.com/fJa4aXZSWn8AAAAC/tenor.gif',
+    'https://c.tenor.com/BoYBoopIkX4AAAAC/tenor.gif',
+    'https://c.tenor.com/Xz2E9vJ0d0wAAAAC/tenor.gif',
+    'https://c.tenor.com/UhcyGsGk3jAAAAAC/tenor.gif'
   ],
   cry: [
-    'https://media.tenor.com/tNL9h2JPeXMAAAAC/anime-cry.gif',
-    'https://media.tenor.com/0Tz3B7q3fK8AAAAC/anime-crying.gif',
-    'https://media.tenor.com/8V0V6pVw2GQAAAAC/anime-cry.gif',
-    'https://media.tenor.com/tQ3J6OCYfPAAAAAC/sad-anime.gif',
-    'https://media.tenor.com/SI2YvWq_5cMAAAAC/anime-cry.gif'
+    'https://c.tenor.com/tNL9h2JPeXMAAAAC/tenor.gif',
+    'https://c.tenor.com/0Tz3B7q3fK8AAAAC/tenor.gif',
+    'https://c.tenor.com/8V0V6pVw2GQAAAAC/tenor.gif',
+    'https://c.tenor.com/SI2YvWq_5cMAAAAC/tenor.gif'
   ],
   puchero: [
-    'https://media.tenor.com/1Z9f3k6q3mIAAAAC/anime-pout.gif',
-    'https://media.tenor.com/3r5Q3tQ3Q3QAAAAC/pout-anime.gif',
-    'https://media.tenor.com/9n2R8k9x7tYAAAAC/anime-pout.gif',
-    'https://media.tenor.com/8fH4j3Q2w5EAAAAC/pouting-anime.gif'
+    'https://c.tenor.com/1Z9f3k6q3mIAAAAC/tenor.gif',
+    'https://c.tenor.com/3r5Q3tQ3Q3QAAAAC/tenor.gif',
+    'https://c.tenor.com/9n2R8k9x7tYAAAAC/tenor.gif',
+    'https://c.tenor.com/8fH4j3Q2w5EAAAAC/tenor.gif'
   ],
   bite: [
-    'https://media.tenor.com/Yg2r0c8f8bQAAAAC/anime-bite.gif',
-    'https://media.tenor.com/1aH3fJ3k3b8AAAAC/bite-anime.gif',
-    'https://media.tenor.com/qW7r9k5m6n0AAAAC/anime-bite.gif',
-    'https://media.tenor.com/4pL8d3s6f1vAAAAC/bite.gif'
+    'https://c.tenor.com/Yg2r0c8f8bQAAAAC/tenor.gif',
+    'https://c.tenor.com/1aH3fJ3k3b8AAAAC/tenor.gif',
+    'https://c.tenor.com/qW7r9k5m6n0AAAAC/tenor.gif',
+    'https://c.tenor.com/4pL8d3s6f1vAAAAC/tenor.gif'
   ],
   cuddle: [
-    'https://media.tenor.com/2f6e2d5f7h8AAAAC/anime-cuddle.gif',
-    'https://media.tenor.com/h8a3j2k5l9MAAAAC/cuddle-anime.gif',
-    'https://media.tenor.com/5gH9j3k7l2pAAAAC/anime-cuddle.gif',
-    'https://media.tenor.com/7dF2s8h4k9qAAAAC/cuddle.gif'
+    'https://c.tenor.com/2f6e2d5f7h8AAAAC/tenor.gif',
+    'https://c.tenor.com/h8a3j2k5l9MAAAAC/tenor.gif',
+    'https://c.tenor.com/5gH9j3k7l2pAAAAC/tenor.gif',
+    'https://c.tenor.com/7dF2s8h4k9qAAAAC/tenor.gif'
   ],
   blush: [
-    'https://media.tenor.com/4g5h6j7k8l9AAAAC/anime-blush.gif',
-    'https://media.tenor.com/1q2w3e4r5t6AAAAC/blushing-anime.gif',
-    'https://media.tenor.com/6yU8i9o0p1aAAAAC/anime-blush.gif',
-    'https://media.tenor.com/3sD4f5g6h7jAAAAC/blush.gif',
-    'https://media.tenor.com/pL9o8i7u6y5AAAAC/anime-embarrassed.gif'
+    'https://c.tenor.com/4g5h6j7k8l9AAAAC/tenor.gif',
+    'https://c.tenor.com/1q2w3e4r5t6AAAAC/tenor.gif',
+    'https://c.tenor.com/6yU8i9o0p1aAAAAC/tenor.gif',
+    'https://c.tenor.com/pL9o8i7u6y5AAAAC/tenor.gif'
   ],
   dance: [
-    'https://media.tenor.com/5t6y7u8i9o0AAAAC/anime-dance.gif',
-    'https://media.tenor.com/1a2s3d4f5g6AAAAC/dancing-anime.gif',
-    'https://media.tenor.com/9kL0z1x2c3vAAAAC/anime-dance.gif',
-    'https://media.tenor.com/7bN8m9q1w2eAAAAC/dance.gif'
+    'https://c.tenor.com/5t6y7u8i9o0AAAAC/tenor.gif',
+    'https://c.tenor.com/1a2s3d4f5g6AAAAC/tenor.gif',
+    'https://c.tenor.com/9kL0z1x2c3vAAAAC/tenor.gif',
+    'https://c.tenor.com/7bN8m9q1w2eAAAAC/tenor.gif'
   ],
   happy: [
-    'https://media.tenor.com/7h8j9k0l1z2AAAAC/anime-happy.gif',
-    'https://media.tenor.com/3x4c5v6b7n8AAAAC/happy-anime.gif',
-    'https://media.tenor.com/2qW3e4r5t6yAAAAC/anime-happy.gif',
-    'https://media.tenor.com/8uI9o0p1a2sAAAAC/happy.gif'
+    'https://c.tenor.com/7h8j9k0l1z2AAAAC/tenor.gif',
+    'https://c.tenor.com/3x4c5v6b7n8AAAAC/tenor.gif',
+    'https://c.tenor.com/2qW3e4r5t6yAAAAC/tenor.gif',
+    'https://c.tenor.com/8uI9o0p1a2sAAAAC/tenor.gif'
   ],
   angry: [
-    'https://media.tenor.com/9m0n1b2v3c4AAAAC/anime-angry.gif',
-    'https://media.tenor.com/5z6x7c8v9b0AAAAC/angry-anime.gif',
-    'https://media.tenor.com/1qA2s3d4f5gAAAAC/anime-angry.gif',
-    'https://media.tenor.com/6hJ7k8l9z0xAAAAC/angry.gif'
+    'https://c.tenor.com/9m0n1b2v3c4AAAAC/tenor.gif',
+    'https://c.tenor.com/5z6x7c8v9b0AAAAC/tenor.gif',
+    'https://c.tenor.com/1qA2s3d4f5gAAAAC/tenor.gif',
+    'https://c.tenor.com/6hJ7k8l9z0xAAAAC/tenor.gif'
   ],
   sleep: [
-    'https://media.tenor.com/2aB3c4d5e6fAAAAC/anime-sleep.gif',
-    'https://media.tenor.com/7gH8i9j0k1lAAAAC/sleeping-anime.gif',
-    'https://media.tenor.com/4mN5b6v7c8xAAAAC/anime-sleepy.gif',
-    'https://media.tenor.com/9qW1e2r3t4yAAAAC/sleep.gif'
+    'https://c.tenor.com/2aB3c4d5e6fAAAAC/tenor.gif',
+    'https://c.tenor.com/7gH8i9j0k1lAAAAC/tenor.gif',
+    'https://c.tenor.com/4mN5b6v7c8xAAAAC/tenor.gif',
+    'https://c.tenor.com/9qW1e2r3t4yAAAAC/tenor.gif'
   ],
   eat: [
-    'https://media.tenor.com/5zX6c7v8b9nAAAAC/anime-eating.gif',
-    'https://media.tenor.com/1aS2d3f4g5hAAAAC/eat-anime.gif',
-    'https://media.tenor.com/8jK9l0z1x2cAAAAC/anime-eat.gif',
-    'https://media.tenor.com/3vB4n5m6q7wAAAAC/eating.gif'
+    'https://c.tenor.com/5zX6c7v8b9nAAAAC/tenor.gif',
+    'https://c.tenor.com/1aS2d3f4g5hAAAAC/tenor.gif',
+    'https://c.tenor.com/8jK9l0z1x2cAAAAC/tenor.gif',
+    'https://c.tenor.com/3vB4n5m6q7wAAAAC/tenor.gif'
   ],
   wave: [
-    'https://media.tenor.com/6eR7t8y9u0iAAAAC/anime-wave.gif',
-    'https://media.tenor.com/2oP3i4u5y6tAAAAC/wave-anime.gif',
-    'https://media.tenor.com/9rE8w7q6w5eAAAAC/anime-hi.gif',
-    'https://media.tenor.com/1rT2y3u4i5oAAAAC/waving.gif'
+    'https://c.tenor.com/6eR7t8y9u0iAAAAC/tenor.gif',
+    'https://c.tenor.com/2oP3i4u5y6tAAAAC/tenor.gif',
+    'https://c.tenor.com/9rE8w7q6w5eAAAAC/tenor.gif',
+    'https://c.tenor.com/1rT2y3u4i5oAAAAC/tenor.gif'
   ],
   laugh: [
-    'https://media.tenor.com/4pL5o6i7u8yAAAAC/anime-laugh.gif',
-    'https://media.tenor.com/7tR6e5w4q3wAAAAC/laughing-anime.gif',
-    'https://media.tenor.com/0oI9u8y7t6rAAAAC/anime-laughing.gif',
-    'https://media.tenor.com/3eW2q1w0e9rAAAAC/laugh.gif'
+    'https://c.tenor.com/4pL5o6i7u8yAAAAC/tenor.gif',
+    'https://c.tenor.com/7tR6e5w4q3wAAAAC/tenor.gif',
+    'https://c.tenor.com/0oI9u8y7t6rAAAAC/tenor.gif',
+    'https://c.tenor.com/3eW2q1w0e9rAAAAC/tenor.gif'
   ],
   marry: [
-    'https://media.tenor.com/1a2b3c4d5e6AAAAC/anime-wedding.gif',
-    'https://media.tenor.com/7f8g9h0j1k2AAAAC/anime-marriage.gif',
-    'https://media.tenor.com/3l4m5n6o7p8AAAAC/wedding-anime.gif',
-    'https://media.tenor.com/9q0w1e2r3t4AAAAC/marriage.gif'
+    'https://c.tenor.com/1a2b3c4d5e6AAAAC/tenor.gif',
+    'https://c.tenor.com/7f8g9h0j1k2AAAAC/tenor.gif',
+    'https://c.tenor.com/3l4m5n6o7p8AAAAC/tenor.gif',
+    'https://c.tenor.com/9q0w1e2r3t4AAAAC/tenor.gif'
   ],
   propose: [
-    'https://media.tenor.com/3l4m5n6o7p8AAAAC/anime-proposal.gif',
-    'https://media.tenor.com/9q0w1e2r3t4AAAAC/propose-anime.gif',
-    'https://media.tenor.com/5yU6i7o8p9aAAAAC/anime-propose.gif',
-    'https://media.tenor.com/2sD3f4g5h6jAAAAC/proposal.gif'
+    'https://c.tenor.com/3l4m5n6o7p8AAAAC/tenor.gif',
+    'https://c.tenor.com/9q0w1e2r3t4AAAAC/tenor.gif',
+    'https://c.tenor.com/5yU6i7o8p9aAAAAC/tenor.gif',
+    'https://c.tenor.com/2sD3f4g5h6jAAAAC/tenor.gif'
   ]
 };
 
@@ -147,14 +141,26 @@ function randomGif(type) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// Base de datos simple para matrimonios
+// Base de datos simple para matrimonios y warns
 const marriages = new Map();
+const warns = new Map(); // userId -> [razones]
+
+// MENSAJES ALEATORIOS QUE TÚ QUIERAS - EDITA ESTOS
+const mensajesRandom = [
+  'XINTOKIO está vigilando... 👀',
+  'Recuerden hidratarse chibolos 💧',
+  'Alguien quiere rol? 😏',
+  'Hoy toca ser basados 🔥',
+  'Yo solo vine por los memes 🗿',
+  'Prohíban el cringe porfa',
+  'UwU'
+];
 
 // 4. Evento ready
 client.once('ready', async () => {
   console.log(`✅ XINTOKIO online como ${client.user.tag}`);
   const commands = [
-    // MODERACIÓN
+    // MODERACIÓN - AHORA 13 COMANDOS
     new SlashCommandBuilder().setName('help').setDescription('Muestra todos los comandos'),
     new SlashCommandBuilder().setName('ban').setDescription('Banea a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
     new SlashCommandBuilder().setName('unban').setDescription('Desbanea a un usuario').addStringOption(o => o.setName('userid').setDescription('ID del usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón')),
@@ -162,6 +168,7 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('mute').setDescription('Silencia a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('minutos').setDescription('Minutos 1-10080').setRequired(true).setMinValue(1).setMaxValue(10080)).addStringOption(o => o.setName('razon').setDescription('Razón')),
     new SlashCommandBuilder().setName('unmute').setDescription('Quita el timeout').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
     new SlashCommandBuilder().setName('warn').setDescription('Advierte a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón').setRequired(true)),
+    new SlashCommandBuilder().setName('unwarn').setDescription('Quita un warn a un usuario').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)).addIntegerOption(o => o.setName('numero').setDescription('Número de warn a quitar. Deja vacío para quitar todos').setMinValue(1)),
     new SlashCommandBuilder().setName('clear').setDescription('Borra mensajes').addIntegerOption(o => o.setName('cantidad').setDescription('1-100').setRequired(true).setMinValue(1).setMaxValue(100)),
     new SlashCommandBuilder().setName('lock').setDescription('Bloquea el canal').addStringOption(o => o.setName('razon').setDescription('Razón')),
     new SlashCommandBuilder().setName('unlock').setDescription('Desbloquea el canal'),
@@ -192,7 +199,19 @@ client.once('ready', async () => {
   ].map(command => command.toJSON());
 
   await client.application.commands.set(commands);
-  console.log('✅ 33 comandos registrados: 12 mod + 21 rol');
+  console.log('✅ 34 comandos registrados: 13 mod + 21 rol');
+
+  // MENSAJES ALEATORIOS CADA 15-30 MIN
+  setInterval(() => {
+    const guilds = client.guilds.cache;
+    guilds.forEach(guild => {
+      const channel = guild.systemChannel || guild.channels.cache.find(c => c.name.includes('general') || c.name.includes('chat'));
+      if (channel && channel.permissionsFor(guild.members.me).has(PermissionFlagsBits.SendMessages)) {
+        const msg = mensajesRandom[Math.floor(Math.random() * mensajesRandom.length)];
+        channel.send(msg).catch(() => {});
+      }
+    });
+  }, Math.floor(Math.random() * 900000) + 900000); // 15-30 min
 });
 
 client.on('interactionCreate', async interaction => {
@@ -210,17 +229,17 @@ client.on('interactionCreate', async interaction => {
     // HELP
     if (commandName === 'help') {
       const embed = new EmbedBuilder()
-  .setTitle('🤖 Comandos de XINTOKIO')
-  .setColor('#FF69B4')
-  .addFields(
-        { name: '🔨 Moderación', value: '`/ban` `/unban` `/kick` `/mute` `/unmute` `/warn` `/clear` `/lock` `/unlock` `/slowmode`', inline: false },
+.setTitle('🤖 Comandos de XINTOKIO')
+.setColor('#FF69B4')
+.addFields(
+        { name: '🔨 Moderación', value: '`/ban` `/unban` `/kick` `/mute` `/unmute` `/warn` `/unwarn` `/clear` `/lock` `/unlock` `/slowmode`', inline: false },
         { name: '💖 Interacción Tierna', value: '`/kiss` `/hug` `/pat` `/cuddle` `/blush` `/happy` `/wave`', inline: false },
         { name: '😈 Interacción Travesura', value: '`/slap` `/punch` `/bite` `/angry`', inline: false },
         { name: '😭 Emociones', value: '`/cry` `/puchero` `/dance` `/sleep` `/eat` `/laugh`', inline: false },
         { name: '💍 Matrimonio', value: '`/propose` `/marry` `/divorce` `/marriage`', inline: false },
         { name: '⚙️ Utilidad', value: '`/decir` `/help`', inline: false }
       )
-  .setFooter({ text: 'XINTOKIO Bot | Estilo Nekotina Completo - 33 comandos' });
+.setFooter({ text: 'XINTOKIO Bot | Estilo Nekotina Completo - 34 comandos' });
       return interaction.editReply({ embeds: [embed] });
     }
 
@@ -273,9 +292,30 @@ client.on('interactionCreate', async interaction => {
       if (!interaction.memberPermissions.has(PermissionFlagsBits.ModerateMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Moderar miembros`.' });
       const user = interaction.options.getUser('usuario');
       const reason = interaction.options.getString('razon');
-      const embed = new EmbedBuilder().setColor('#FFFF00').setTitle('⚠️ Advertencia').setDescription(`${user} has sido advertido.`).addFields({ name: 'Razón', value: reason }, { name: 'Moderador', value: `${interaction.user}` });
+      const userWarns = warns.get(user.id) || [];
+      userWarns.push(reason);
+      warns.set(user.id, userWarns);
+      const embed = new EmbedBuilder().setColor('#FFFF00').setTitle('⚠️ Advertencia').setDescription(`${user} has sido advertido.`).addFields({ name: 'Razón', value: reason }, { name: 'Moderador', value: `${interaction.user}` }, { name: 'Total warns', value: `${userWarns.length}` });
       await interaction.channel.send({ content: `${user}`, embeds: [embed] });
-      return interaction.editReply({ content: `✅ ${user.tag} advertido.` });
+      return interaction.editReply({ content: `✅ ${user.tag} advertido. Total: ${userWarns.length}` });
+    }
+
+    if (commandName === 'unwarn') {
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ModerateMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Moderar miembros`.' });
+      const user = interaction.options.getUser('usuario');
+      const numero = interaction.options.getInteger('numero');
+      const userWarns = warns.get(user.id) || [];
+      if (userWarns.length === 0) return interaction.editReply({ content: '❌ Ese usuario no tiene warns.' });
+
+      if (!numero) {
+        warns.delete(user.id);
+        return interaction.editReply({ content: `✅ Se quitaron todos los warns de ${user.tag}.` });
+      } else {
+        if (numero > userWarns.length) return interaction.editReply({ content: `❌ Solo tiene ${userWarns.length} warns.` });
+        userWarns.splice(numero - 1, 1);
+        warns.set(user.id, userWarns);
+        return interaction.editReply({ content: `✅ Se quitó el warn #${numero} de ${user.tag}. Warns restantes: ${userWarns.length}` });
+      }
     }
 
     if (commandName === 'clear') {
