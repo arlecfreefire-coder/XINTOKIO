@@ -120,25 +120,25 @@ client.once('ready', async () => {
     new SlashCommandBuilder().setName('iamode').setDescription('Activa IA en este canal').addBooleanOption(o => o.setName('estado').setDescription('on/off').setRequired(true)),
 
     // MOD PRO NUEVOS
-    new SlashCommandBuilder().setName('massban').setDescription('Banea varios usuarios').addStringOption(o => o.setName('usuarios').setDescription('IDs separados por espacio').setRequired(true)).addStringOption(o => o.setName('razon').setDescription('Razón del ban')),
-    new SlashCommandBuilder().setName('userinfo').setDescription('Info completa de un user').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-    new SlashCommandBuilder().setName('roleall').setDescription('Da rol a todos').addRoleOption(o => o.setName('rol').setDescription('Rol a dar').setRequired(true)),
-    new SlashCommandBuilder().setName('vcban').setDescription('Banea de canales de voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
+new SlashCommandBuilder().setName('massban').setDescription('Banea varios usuarios').addStringOption(o => o.setName('usuarios').setDescription('IDs separados por espacio').setRequired(true)),
+new SlashCommandBuilder().setName('userinfo').setDescription('Info completa de un user').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
+new SlashCommandBuilder().setName('roleall').setDescription('Da rol a todos').addRoleOption(o => o.setName('rol').setDescription('Rol a dar').setRequired(true)),
+new SlashCommandBuilder().setName('vcban').setDescription('Banea de canales de voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
 
-    // LOGS Y AUTOSPY
-    new SlashCommandBuilder().setName('messagelogs').setDescription('Últimos mensajes borrados').addChannelOption(o => o.setName('canal').setDescription('Canal').setRequired(true)),
-    new SlashCommandBuilder().setName('joinlogs').setDescription('Historial de entradas').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-    new SlashCommandBuilder().setName('invites').setDescription('Top 10 invitaciones del server'),
-    new SlashCommandBuilder().setName('antispam').setDescription('Anti-spam on/off').addBooleanOption(o => o.setName('estado').setDescription('on/off').setRequired(true)),
-    new SlashCommandBuilder().setName('badword').setDescription('Lista negra de palabras').addSubcommand(s => s.setName('add').setDescription('Agregar palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true))).addSubcommand(s => s.setName('remove').setDescription('Quitar palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true))).addSubcommand(s => s.setName('list').setDescription('Ver lista')),
+// LOGS Y AUTOSPY
+new SlashCommandBuilder().setName('messagelogs').setDescription('Ultimos mensajes borrados'),
+new SlashCommandBuilder().setName('joinlogs').setDescription('Cuando entro un user').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
+new SlashCommandBuilder().setName('invites').setDescription('Top invites del server'),
+new SlashCommandBuilder().setName('antispam').setDescription('Activa anti-spam').addBooleanOption(o => o.setName('estado').setDescription('ON/OFF').setRequired(true)),
+new SlashCommandBuilder().setName('badword').setDescription('Lista negra de palabras').addSubcommand(s => s.setName('add').setDescription('Agrega palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true))).addSubcommand(s => s.setName('remove').setDescription('Quita palabra').addStringOption(o => o.setName('palabra').setDescription('Palabra').setRequired(true))).addSubcommand(s => s.setName('list').setDescription('Ver lista')),
 
-    // ANTI-TOXIC EXTRA
-    new SlashCommandBuilder().setName('massnick').setDescription('Cambia apodo de todos').addStringOption(o => o.setName('apodo').setDescription('Nuevo apodo').setRequired(true)),
-    new SlashCommandBuilder().setName('deafen').setDescription('Ensordece en voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
-    new SlashCommandBuilder().setName('nuke').setDescription('Clona y borra el canal actual'),
-    new SlashCommandBuilder().setName('susmode').setDescription('Autoban si manda link al entrar').addBooleanOption(o => o.setName('estado').setDescription('on/off').setRequired(true)),
-    new SlashCommandBuilder().setName('fakeban').setDescription('Ban falso pa trolear').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true))
-  ].map(command => command.toJSON());
+// ANTI-TOXIC EXTRA
+new SlashCommandBuilder().setName('massnick').setDescription('Cambia apodo a todos').addStringOption(o => o.setName('apodo').setDescription('Nuevo apodo').setRequired(true)),
+new SlashCommandBuilder().setName('deafen').setDescription('Ensordece en voz').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true)),
+new SlashCommandBuilder().setName('nuke').setDescription('Clona y borra el canal actual'),
+new SlashCommandBuilder().setName('susmode').setDescription('Ban a nuevos con link').addBooleanOption(o => o.setName('estado').setDescription('ON/OFF').setRequired(true)),
+new SlashCommandBuilder().setName('fakeban').setDescription('Ban falso troll').addUserOption(o => o.setName('usuario').setDescription('Usuario').setRequired(true))
+]).map(command => command.toJSON());
 
   await client.application.commands.set(commands);
   console.log('✅ 58 comandos registrados');
@@ -890,7 +890,7 @@ client.on('interactionCreate', async interaction => {
       }
     }
 
-    // MOD PRO
+// MOD PRO
     if (commandName === 'massban') {
       const tieneRol = interaction.member.roles.cache.some(r => ROLES_MASSBAN.includes(r.id));
       if (!tieneRol) return interaction.editReply({ content: '❌ Solo Co Owner y XINBONIS pueden usar esto.' });
@@ -925,30 +925,6 @@ client.on('interactionCreate', async interaction => {
         if (!member.user.bot) { try { await member.roles.add(rol); count++; } catch {} }
       }
       return interaction.editReply({ content: `✅ Rol ${rol} dado a ${count} miembros.` });
-    }
-
-    if (commandName === 'vcban') {
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.MuteMembers)) return interaction.editReply({ content: '❌ No tienes permiso `Silenciar miembros`.' });
-      const user = interaction.options.getUser('usuario');
-      const member = await interaction.guild.members.fetch(user.id);
-      await member.voice.disconnect().catch(() => {});
-      await member.voice.setMute(true, 'VC Ban').catch(() => {});
-      return interaction.editReply({ content: `🔇 ${user} baneado de voz.` });
-    }
-
-    if (commandName === 'nicklock') {
-      if (interaction.options.getSubcommand() === 'unlock') {
-        const user = interaction.options.getUser('usuario');
-        nicklocked.delete(user.id);
-        return interaction.editReply({ content: `🔓 Nick desbloqueado para ${user}` });
-      }
-      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageNicknames)) return interaction.editReply({ content: '❌ No tienes permiso `Gestionar apodos`.' });
-      const user = interaction.options.getUser('usuario');
-      const apodo = interaction.options.getString('apodo');
-      const member = await interaction.guild.members.fetch(user.id);
-      await member.setNickname(apodo);
-      nicklocked.set(user.id, apodo);
-      return interaction.editReply({ content: `🔒 Nick bloqueado: ${user} ahora es **${apodo}**` });
     }
 
     // LOGS Y AUTOSPY
