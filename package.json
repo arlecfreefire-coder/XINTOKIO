@@ -2,12 +2,16 @@
   "name": "xintokio",
   "version": "1.0.0",
   "description": "Bot de Discord XINTOKIO 24/7",
-  "main": "index.js",
+  "main": "moderation.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node moderation.js"
   },
   "dependencies": {
-    "discord.js": "^14.15.3",
-    "express": "^4.18.2"
+    "discord.js": "14.15.3",
+    "express": "4.18.2",
+    "dotenv": "16.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0 <21.0.0"
   }
-} 
+}
