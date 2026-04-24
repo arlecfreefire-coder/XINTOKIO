@@ -18,23 +18,103 @@ const client = new Client({
   ]
 });
 
-// 3. GIFs para comandos de rol
+// 3. GIFS ANIME VARIADOS ESTILO NEKOTINA - ACTUALIZADOS 2026
 const gifs = {
-  kiss: ['https://media.tenor.com/F02Ep3b2jJgAAAAC/kiss-anime.gif', 'https://media.tenor.com/yo5g2s8t0mQAAAAC/kiss-anime.gif', 'https://media.tenor.com/11rLi8Dtb5wAAAAC/anime-kiss.gif'],
-  hug: ['https://media.tenor.com/9e1aE_xJKW0AAAAC/anime-hug.gif', 'https://media.tenor.com/G_IvZkVc1EwAAAAC/anime-hug.gif', 'https://media.tenor.com/2bJ8r1i_1H8AAAAC/hug-anime.gif'],
-  pat: ['https://media.tenor.com/7lWq3qYkQ6EAAAAC/anime-head-pat.gif', 'https://media.tenor.com/vuGwL_3sOZ4AAAAC/anime-pat.gif', 'https://media.tenor.com/E6fMkQRZBdYAAAAC/headpat-anime.gif'],
-  slap: ['https://media.tenor.com/5PVLn4OFUYsAAAAC/anime-slap.gif', 'https://media.tenor.com/Ws6DmWIL-qIAAAAC/girl-slap.gif', 'https://media.tenor.com/rVXByHOHzPIAAAAC/anime-slap.gif'],
-  punch: ['https://media.tenor.com/fJa4aXZSWn8AAAAC/anime-punch.gif', 'https://media.tenor.com/BoYBoopIkX4AAAAC/anime-punch.gif'],
-  cry: ['https://media.tenor.com/8V0V6pVw2GQAAAAC/anime-cry.gif', 'https://media.tenor.com/tQ3J6OCYfPAAAAAC/sad-anime.gif', 'https://media.tenor.com/0Tz3B7q3fK8AAAAC/anime-crying.gif'],
-  puchero: ['https://media.tenor.com/1Z9f3k6q3mIAAAAC/anime-pout.gif', 'https://media.tenor.com/3r5Q3tQ3Q3QAAAAC/pout-anime.gif'],
-  bite: ['https://media.tenor.com/Yg2r0c8f8bQAAAAC/anime-bite.gif', 'https://media.tenor.com/1aH3fJ3k3b8AAAAC/bite-anime.gif'],
-  cuddle: ['https://media.tenor.com/2f6e2d5f7h8AAAAC/anime-cuddle.gif', 'https://media.tenor.com/h8a3j2k5l9MAAAAC/cuddle-anime.gif'],
-  blush: ['https://media.tenor.com/4g5h6j7k8l9AAAAC/anime-blush.gif', 'https://media.tenor.com/1q2w3e4r5t6AAAAC/blushing-anime.gif'],
-  dance: ['https://media.tenor.com/5t6y7u8i9o0AAAAC/anime-dance.gif', 'https://media.tenor.com/1a2s3d4f5g6AAAAC/dancing-anime.gif'],
-  happy: ['https://media.tenor.com/7h8j9k0l1z2AAAAC/anime-happy.gif', 'https://media.tenor.com/3x4c5v6b7n8AAAAC/happy-anime.gif'],
-  angry: ['https://media.tenor.com/9m0n1b2v3c4AAAAC/anime-angry.gif', 'https://media.tenor.com/5z6x7c8v9b0AAAAC/angry-anime.gif'],
-  marry: ['https://media.tenor.com/1a2b3c4d5e6AAAAC/anime-wedding.gif', 'https://media.tenor.com/7f8g9h0j1k2AAAAC/anime-marriage.gif'],
-  propose: ['https://media.tenor.com/3l4m5n6o7p8AAAAC/anime-proposal.gif', 'https://media.tenor.com/9q0w1e2r3t4AAAAC/propose-anime.gif']
+  kiss: [
+    'https://media.tenor.com/gUiu1zyIiQcAAAAC/anime-kiss.gif',
+    'https://media.tenor.com/F02Ep3b2jJgAAAAC/kiss-anime.gif',
+    'https://media.tenor.com/8Sa2mN7YELMAAAAC/anime-kiss-love.gif',
+    'https://media.tenor.com/Yhx8urH0XGEAAAAC/kiss-anime.gif',
+    'https://media.tenor.com/04B4QYdW1yQAAAAC/anime-kiss.gif'
+  ],
+  hug: [
+    'https://media.tenor.com/C-8LCCSbJ0gAAAAC/anime-hug.gif',
+    'https://media.tenor.com/9e1aE_xJKW0AAAAC/anime-hug.gif',
+    'https://media.tenor.com/G_IvZkVc1EwAAAAC/hug-anime.gif',
+    'https://media.tenor.com/2bJ8r1i_1H8AAAAC/hug-anime.gif',
+    'https://media.tenor.com/b3QvtN8_fW4AAAAC/anime-hug.gif'
+  ],
+  pat: [
+    'https://media.tenor.com/7lWq3qYkQ6EAAAAC/anime-head-pat.gif',
+    'https://media.tenor.com/w4P9jF-GVjIAAAAC/anime-pat.gif',
+    'https://media.tenor.com/E6fMkQRZBdYAAAAC/headpat-anime.gif',
+    'https://media.tenor.com/TLJpoqR-2FoAAAAC/anime-pat.gif',
+    'https://media.tenor.com/0N3r8K8yq6YAAAAC/anime-headpat.gif'
+  ],
+  slap: [
+    'https://media.tenor.com/5PVLn4OFUYsAAAAC/anime-slap.gif',
+    'https://media.tenor.com/Ws6DmWIL-qIAAAAC/slap-anime.gif',
+    'https://media.tenor.com/rVXByHOHzPIAAAAC/anime-slap.gif',
+    'https://media.tenor.com/VhHnV55rVn4AAAAC/anime-slap.gif',
+    'https://media.tenor.com/1i2pWnR9o3cAAAAC/slap.gif'
+  ],
+  punch: [
+    'https://media.tenor.com/fJa4aXZSWn8AAAAC/anime-punch.gif',
+    'https://media.tenor.com/BoYBoopIkX4AAAAC/punch-anime.gif',
+    'https://media.tenor.com/Xz2E9vJ0d0wAAAAC/anime-punch.gif',
+    'https://media.tenor.com/UhcyGsGk3jAAAAAC/anime-punch.gif'
+  ],
+  cry: [
+    'https://media.tenor.com/tNL9h2JPeXMAAAAC/anime-cry.gif',
+    'https://media.tenor.com/0Tz3B7q3fK8AAAAC/anime-crying.gif',
+    'https://media.tenor.com/8V0V6pVw2GQAAAAC/anime-cry.gif',
+    'https://media.tenor.com/tQ3J6OCYfPAAAAAC/sad-anime.gif',
+    'https://media.tenor.com/SI2YvWq_5cMAAAAC/anime-cry.gif'
+  ],
+  puchero: [
+    'https://media.tenor.com/1Z9f3k6q3mIAAAAC/anime-pout.gif',
+    'https://media.tenor.com/3r5Q3tQ3Q3QAAAAC/pout-anime.gif',
+    'https://media.tenor.com/9n2R8k9x7tYAAAAC/anime-pout.gif',
+    'https://media.tenor.com/8fH4j3Q2w5EAAAAC/pouting-anime.gif'
+  ],
+  bite: [
+    'https://media.tenor.com/Yg2r0c8f8bQAAAAC/anime-bite.gif',
+    'https://media.tenor.com/1aH3fJ3k3b8AAAAC/bite-anime.gif',
+    'https://media.tenor.com/qW7r9k5m6n0AAAAC/anime-bite.gif',
+    'https://media.tenor.com/4pL8d3s6f1vAAAAC/bite.gif'
+  ],
+  cuddle: [
+    'https://media.tenor.com/2f6e2d5f7h8AAAAC/anime-cuddle.gif',
+    'https://media.tenor.com/h8a3j2k5l9MAAAAC/cuddle-anime.gif',
+    'https://media.tenor.com/5gH9j3k7l2pAAAAC/anime-cuddle.gif',
+    'https://media.tenor.com/7dF2s8h4k9qAAAAC/cuddle.gif'
+  ],
+  blush: [
+    'https://media.tenor.com/4g5h6j7k8l9AAAAC/anime-blush.gif',
+    'https://media.tenor.com/1q2w3e4r5t6AAAAC/blushing-anime.gif',
+    'https://media.tenor.com/6yU8i9o0p1aAAAAC/anime-blush.gif',
+    'https://media.tenor.com/3sD4f5g6h7jAAAAC/blush.gif'
+  ],
+  dance: [
+    'https://media.tenor.com/5t6y7u8i9o0AAAAC/anime-dance.gif',
+    'https://media.tenor.com/1a2s3d4f5g6AAAAC/dancing-anime.gif',
+    'https://media.tenor.com/9kL0z1x2c3vAAAAC/anime-dance.gif',
+    'https://media.tenor.com/7bN8m9q1w2eAAAAC/dance.gif'
+  ],
+  happy: [
+    'https://media.tenor.com/7h8j9k0l1z2AAAAC/anime-happy.gif',
+    'https://media.tenor.com/3x4c5v6b7n8AAAAC/happy-anime.gif',
+    'https://media.tenor.com/2qW3e4r5t6yAAAAC/anime-happy.gif',
+    'https://media.tenor.com/8uI9o0p1a2sAAAAC/happy.gif'
+  ],
+  angry: [
+    'https://media.tenor.com/9m0n1b2v3c4AAAAC/anime-angry.gif',
+    'https://media.tenor.com/5z6x7c8v9b0AAAAC/angry-anime.gif',
+    'https://media.tenor.com/1qA2s3d4f5gAAAAC/anime-angry.gif',
+    'https://media.tenor.com/6hJ7k8l9z0xAAAAC/angry.gif'
+  ],
+  marry: [
+    'https://media.tenor.com/1a2b3c4d5e6AAAAC/anime-wedding.gif',
+    'https://media.tenor.com/7f8g9h0j1k2AAAAC/anime-marriage.gif',
+    'https://media.tenor.com/3l4m5n6o7p8AAAAC/wedding-anime.gif',
+    'https://media.tenor.com/9q0w1e2r3t4AAAAC/marriage.gif'
+  ],
+  propose: [
+    'https://media.tenor.com/3l4m5n6o7p8AAAAC/anime-proposal.gif',
+    'https://media.tenor.com/9q0w1e2r3t4AAAAC/propose-anime.gif',
+    'https://media.tenor.com/5yU6i7o8p9aAAAAC/anime-propose.gif',
+    'https://media.tenor.com/2sD3f4g5h6jAAAAC/proposal.gif'
+  ]
 };
 
 function randomGif(type) {
@@ -101,9 +181,9 @@ client.on('interactionCreate', async interaction => {
     // HELP
     if (commandName === 'help') {
       const embed = new EmbedBuilder()
-    .setTitle('🤖 Comandos de XINTOKIO')
-    .setColor('#FF69B4')
-    .addFields(
+   .setTitle('🤖 Comandos de XINTOKIO')
+   .setColor('#FF69B4')
+   .addFields(
         { name: '🔨 Moderación', value: '`/ban` `/unban` `/kick` `/mute` `/unmute` `/warn` `/clear` `/lock` `/unlock` `/slowmode`', inline: false },
         { name: '💖 Interacción Tierna', value: '`/kiss` `/hug` `/pat` `/cuddle` `/blush` `/happy`', inline: false },
         { name: '😈 Interacción Travesura', value: '`/slap` `/punch` `/bite` `/angry`', inline: false },
@@ -111,7 +191,7 @@ client.on('interactionCreate', async interaction => {
         { name: '💍 Matrimonio', value: '`/propose` `/marry` `/divorce` `/marriage`', inline: false },
         { name: '⚙️ Utilidad', value: '`/decir` `/help`', inline: false }
       )
-    .setFooter({ text: 'XINTOKIO Bot | Estilo Nekotina Completo' });
+   .setFooter({ text: 'XINTOKIO Bot | Estilo Nekotina Completo' });
       return interaction.editReply({ embeds: [embed] });
     }
 
@@ -296,4 +376,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 process.on('unhandledRejection', error => console.error('Unhandled:', error));
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN); 
