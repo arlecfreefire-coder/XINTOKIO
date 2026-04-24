@@ -232,6 +232,95 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
     const today = new Date().toLocaleDateString('es-PE');
     const dayLogs = dailyLogs.get(today) || { bans: [], warns: [], mutes: [], roles: [] };
     addedRoles.forEach(role => {
+setInterval(() => {
+  const guilds = client.guilds.cache;
+  guilds.forEach(guild => {
+    const channel = guild.systemChannel || guild.channels.cache.find(c => c.name.includes('general') || c.name.includes('chat') || c.name.includes('principal'));
+    if (channel && channel.permissionsFor(guild.members.me).has(PermissionFlagsBits.SendMessages)) {
+      const msg = mensajesRandom[Math.floor(Math.random() * mensajesRandom.length)];
+      channel.send(msg).catch(() => {});
+    }
+  });
+}, Math.floor(Math.random() * 900000) + 900000);
+
+setInterval(() => {
+  const now = Date.now();
+  tempRoles.forEach((roles, userId) => {
+    roles.forEach(async (data, index) => {
+      if (now >= data.expires) {
+        const guild = client.guilds.cache.first();
+        const member = await guild.members.fetch(userId).catch(() => null);
+        if (member) member.roles.remove(data.roleId).catch(() => {});
+        roles.splice(index, 1);
+      }
+    });
+    if (roles.length === 0) tempRoles.delete(userId);
+  });
+}, 60000);
+
+setInterval(() => {
+  const now = new Date();
+  if (now.getHours() === 0 && now.getMinutes() === 0) {
+    dailyLogs.clear();
+  }
+}, 60000);
+});
+
+function addModStat(modId, type) {
+  const stats = modStats.get(modId) || { bans: 0, kicks: 0, warns: 0, mutes: 0 };
+  stats[type]++;
+  modStats.set(modId, stats);
+  const today = new Date().toLocaleDateString('es-PE');
+  const dayLogs = dailyLogs.get(today) || { bans: [], warns: [], mutes: [], roles: [] };
+  if (type === 'bans' || type === 'warns' || type === 'mutes') {
+    dayLogs[type].push(modId);
+    dailyLogs.set(today, dayLogs);
+  }
+}
+
+function createCase(type, userId, modId, reason) {
+  caseCounter++;
+  caseLogs.set(caseCounter, {
+    type,
+    user: userId,
+    mod: modId,
+    reason,
+    date: new Date().toLocaleString('es-PE')
+  });
+  return caseCounter;
+}
+
+client.on('guildMemberAdd', async member => {
+  if (antiJoin && Date.now() - member.user.createdTimestamp < 7 * 24 * 60 * 1000) {
+    await member.kick('Antijoin activado: cuenta <7 días').catch(() => {});
+    return;
+  }
+  const bans = await member.guild.bans.fetch();
+  const edadCuenta = Date.now() - member.user.createdTimestamp;
+  if (edadCuenta < 7 * 24 * 60 * 60 * 1000 && bans.size > 0) {
+    const canalLogs = member.guild.systemChannel || member.guild.channels.cache.find(c => c.name.includes('logs') || c.name.includes('mod'));
+    if (canalLogs) {
+      const embed = new EmbedBuilder()
+       .setTitle('⚠️ Posible Alt Detectado')
+       .setColor('#FFA500')
+       .setDescription(`${member.user.tag} entró al server`)
+       .addFields(
+          { name: 'Cuenta creada', value: `<t:${Math.floor(member.user.createdTimestamp/1000)}:R>`, inline: true },
+          { name: 'ID', value: member.id, inline: true },
+          { name: 'Acción recomendada', value: 'Usa `/altcheck @usuario` para revisar', inline: false }
+        )
+       .setThumbnail(member.user.displayAvatarURL());
+      canalLogs.send({ embeds: [embed] }).catch(() => {});
+    }
+  }
+});
+
+client.on('guildMemberUpdate', async (oldMember, newMember) => {
+  const addedRoles = newMember.roles.cache.filter(r =>!oldMember.roles.cache.has(r.id));
+  if (addedRoles.size > 0) {
+    const today = new Date().toLocaleDateString('es-PE');
+    const dayLogs = dailyLogs.get(today) || { bans: [], warns: [], mutes: [], roles: [] };
+    addedRoles.forEach(role => {
       dayLogs.roles.push({ user: newMember.id, role: role.name });
     });
     dailyLogs.set(today, dayLogs);
@@ -251,40 +340,40 @@ client.on('interactionCreate', async interaction => {
   try {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-    
+    if (commandName === 'help') {
+      const embed = new EmbedBuilder()
+      .setTitle('🤖 Comandos de XINTOKIO')
+      .setColor('#FF69B4')
+      .addFields(
+          { name: '🔨 Moderación', value: '`/ban` `/unban` `/kick` `/mute` `/unmute` `/warn` `/unwarn` `/warns` `/banlist` `/modstats` `/massban`', inline: false },
+          { name: '📋 Info/Logs', value: '`/userinfo` `/modlogs` `/caselog` `/auditlog` `/messagelogs` `/joinlogs` `/invites`', inline: false },
+          { name: '🛠️ Control', value: '`/clear` `/purge` `/nickname` `/softban` `/temprole` `/lock` `/unlock` `/slowmode` `/roleall` `/vcban`', inline: false },
+          { name: '🚨 Anti-Raid', value: '`/lockall` `/unlockall` `/raidmode` `/antijoin` `/altcheck` `/linkalts` `/banip`', inline: false },
+          { name: '📚 Estudio', value: '`/pomodoro` `/study` `/recordatorio` `/todolist` `/focus` `/rutina` `/calc` `/define` `/traducir` `/notas` `/countdown` `/whitenoise`', inline: false },
+          { name: '🤖 IA', value: '`/ask` `/iamode`', inline: false },
+          { name: '🛡️ Auto-Mod', value: '`/antispam` `/badword` `/susmode`', inline: false },
+          { name: '🔥 Anti-Toxic', value: '`/massnick` `/deafen` `/nuke` `/fakeban`', inline: false },
+          { name: '⚙️ Utilidad', value: '`/decir` `/paneladmin`', inline: false }
+        )
+      .setFooter({ text: 'XINTOKIO Bot | 57 comandos' });
+      return interaction.editReply({ embeds: [embed] });
+    }
 
     if (commandName === 'paneladmin') {
       if (interaction.user.id!== OWNER_ID) return interaction.editReply({ content: '❌ Solo el dueño puede usar este comando.' });
       const today = new Date().toLocaleDateString('es-PE');
       const dayLogs = dailyLogs.get(today) || { bans: [], warns: [], mutes: [], roles: [] };
       const embed = new EmbedBuilder()
-.setTitle('👑 PANEL ADMIN - Actividad del día')
-.setColor('#FFD700')
-.setDescription(`**Fecha:** ${today}`)
-.addFields(
-  { name: '🔨 Bans if (commandName === 'help') {
-  const embed = new EmbedBuilder()
-   .setTitle('🤖 Comandos de XINTOKIO')
-   .setColor('#FF69B4')
-   .addFields(
-      { name: '🔨 Moderación', value: '`/ban` `/unban` `/kick` `/mute` `/unmute` `/warn` `/unwarn` `/warns` `/banlist` `/modstats` `/massban`', inline: false },
-      { name: '📋 Info/Logs', value: '`/userinfo` `/modlogs` `/caselog` `/auditlog` `/messagelogs` `/joinlogs` `/invites`', inline: false },
-      { name: '🛠️ Control', value: '`/clear` `/purge` `/nickname` `/softban` `/temprole` `/lock` `/unlock` `/slowmode` `/roleall` `/vcban`', inline: false },
-      { name: '🚨 Anti-Raid', value: '`/lockall` `/unlockall` `/raidmode` `/antijoin` `/altcheck` `/linkalts` `/banip`', inline: false },
-      { name: '📚 Estudio', value: '`/pomodoro` `/study` `/recordatorio` `/todolist` `/focus` `/rutina` `/calc` `/define` `/traducir` `/notas` `/countdown` `/whitenoise`', inline: false },
-      { name: '🤖 IA', value: '`/ask` `/iamode`', inline: false },
-      { name: '🛡️ Auto-Mod', value: '`/antispam` `/badword` `/susmode`', inline: false },
-      { name: '🔥 Anti-Toxic', value: '`/massnick` `/deafen` `/nuke` `/fakeban`', inline: false },
-      { name: '⚙️ Utilidad', value: '`/decir` `/paneladmin`', inline: false }
-    )
-   .setFooter({ text: 'XINTOKIO Bot | 57 comandos' });
-  return interaction.editReply({ embeds: [embed] });
-    }de hoy', value: `${dayLogs.bans.length}`, inline: true },
-  { name: '⚠️ Warns de hoy', value: `${dayLogs.warns.length}`, inline: true },
-  { name: '🔇 Mutes de hoy', value: `${dayLogs.mutes.length}`, inline: true },
-  { name: '👤 Roles dados hoy', value: dayLogs.roles.length > 0? dayLogs.roles.map(r => `<@${r.user}> → ${r.role}`).slice(0, 10).join('\n') : 'Ninguno', inline: false }
-)
-.setFooter({ text: 'Solo visible para el dueño' });
+       .setTitle('👑 PANEL ADMIN - Actividad del día')
+       .setColor('#FFD700')
+       .setDescription(`**Fecha:** ${today}`)
+       .addFields(
+          { name: '🔨 Bans de hoy', value: `${dayLogs.bans.length}`, inline: true },
+          { name: '⚠️ Warns de hoy', value: `${dayLogs.warns.length}`, inline: true },
+          { name: '🔇 Mutes de hoy', value: `${dayLogs.mutes.length}`, inline: true },
+          { name: '👤 Roles dados hoy', value: dayLogs.roles.length > 0? dayLogs.roles.map(r => `<@${r.user}> → ${r.role}`).slice(0, 10).join('\n') : 'Ninguno', inline: false }
+        )
+       .setFooter({ text: 'Solo visible para el dueño' });
       return interaction.editReply({ embeds: [embed] });
     }
 
