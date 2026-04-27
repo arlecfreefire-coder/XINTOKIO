@@ -3,7 +3,7 @@ const { Client, GatewayIntentBits, SlashCommandBuilder, PermissionFlagsBits, Emb
 const express = require('express');
 
 // PON TU ID AQUÍ - Solo tú puedes usar /paneladmin
-const OWNER_ID = '1433375850996301882'; // ← CAMBIA ESTO POR TU ID DE DISCORD
+const OWNER_ID = '1488985246346248262'; // ← CAMBIA ESTO POR TU ID DE DISCORD
 
 // 1. Servidor web para Render
 const app = express();
